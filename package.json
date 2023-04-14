@@ -1,0 +1,22 @@
+{
+  "name": "ogden",
+  "version": "1.0.0",
+  "main": "src/ogden.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "diacritics": "github:andrewrk/node-diacritics",
+    "discord.js": "github:discordjs/discord.js",
+    "jsonwebtoken": "^8.5.1",
+    "klasa": "github:dirigeants/klasa#master",
+    "luxon": "^1.23.0",
+    "mime": "^2.4.4",
+    "pg": "^8.0.2"
+  },
+  "devDependencies": {},
+  "description": ""
+}
