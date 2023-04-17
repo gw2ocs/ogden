@@ -47,7 +47,7 @@ module.exports = class {
                     const token = this.client.getJwtToken();
                     if (collected.size) {
                         this.winner = collected.first().author;
-                        fetch('https://gw2trivia.com/api/graphql', {
+                        fetch(`${process.env.WEBSITEURL}/api/graphql`, {
                             method: "post",
                             headers: {
                                 'Accept': 'application/json',
@@ -109,7 +109,7 @@ module.exports = class {
                             this.channelDB = await this.client.getDBChannel(this.channel);
                             console.log(`New last_winner is now ${this.channelDB.last_winner}`);
                         }
-                        fetch('https://gw2trivia.com/api/graphql', {
+                        fetch(`${process.env.WEBSITEURL}/api/graphql`, {
                             method: "post",
                             headers: {
                                 'Accept': 'application/json',
@@ -149,7 +149,7 @@ module.exports = class {
         const timeLeft = Interval.fromDateTimes(DateTime.local(), this.endTime).toDuration(['hours', 'minutes', 'seconds']);
         //const description = [`Durée : ${Math.ceil(Duration.fromObject({ seconds: this.duration }).as('minutes'))}min.`];
         const description = [
-            `[**${this.question.spoil && `||${this.question.title}||` || this.question.title}**](${`https://gw2trivia.com/questions/view/${this.question.id}/${this.question.slug}`})`,
+            `[**${this.question.spoil && `||${this.question.title}||` || this.question.title}**](${`${process.env.WEBSITEURL}/questions/view/${this.question.id}/${this.question.slug}`})`,
             ''
         ];
         if (!this.embed) {
@@ -161,7 +161,7 @@ module.exports = class {
                 .setFooter(`${this.points} point${this.points !== 1 ? 's' : ''} | Fini à`)
                 .setTimestamp(this.endTime.toJSDate());
                 if (this.question.user) {
-                    this.embed.setAuthor(this.question.user.username, this.question.user.avatarUrl, `https://gw2trivia.com/questions?user_id=${this.question.user.id}`);
+                    this.embed.setAuthor(this.question.user.username, this.question.user.avatarUrl, `${process.env.WEBSITEURL}/questions?user_id=${this.question.user.id}`);
                 }
                 if (this.question.categories.length) {
                     this.embed.addField('Catégories', this.question.categories.map(c => c.name).join(', '), false);
@@ -197,7 +197,7 @@ module.exports = class {
     }
 
     async sendAttachments() {
-        return Promise.all(this.question.images.map(image => this.channel.send(new MessageAttachment(`https://gw2trivia.com/assets/img/${image.id}`, `${image.id}.${mime.getExtension(image.type)}`))));
+        return Promise.all(this.question.images.map(image => this.channel.send(new MessageAttachment(`${process.env.WEBSITEURL}/assets/img/${image.id}`, `${image.id}.${mime.getExtension(image.type)}`))));
     }
 
     test(message) {

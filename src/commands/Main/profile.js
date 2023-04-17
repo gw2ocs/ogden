@@ -39,7 +39,7 @@ module.exports = class extends Command {
             VALUES ($1, $2, $3, $4, $5) RETURNING *`, [username, userId, discriminator, avatar, 'fr']));
         }
         console.log(rows);
-        return message.send(`Le profil de ${username} est accessible en suivant ce lien : https://gw2trivia.com/users/view/${rows[0].id}`);
+        return message.send(`Le profil de ${username} est accessible en suivant ce lien : ${process.env.WEBSITEURL}/users/view/${rows[0].id}`);
     }
 
     async init() {

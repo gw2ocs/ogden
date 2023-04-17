@@ -11,10 +11,10 @@ module.exports = class extends Task {
 	async post_new_article(guild, channel, article) {
 		const embed = new MessageEmbed()
 			.setColor(0x8080ff)
-			.setAuthor(article.userByUserId.username, article.userByUserId.avatarUrl, `https://gw2trivia.com/questions?user_id=${article.userByUserId.id}`)
+			.setAuthor(article.userByUserId.username, article.userByUserId.avatarUrl, `${process.env.WEBSITEURL}/questions?user_id=${article.userByUserId.id}`)
 			.setTimestamp(new Date(article.validatedAt))
 			.setTitle(article.title)
-			.setURL(`https://gw2trivia.com/articles/view/${article.id}/${article.slug}`)
+			.setURL(`${process.env.WEBSITEURL}/articles/view/${article.id}/${article.slug}`)
 			.addField('Auteur', `<@${article.userByUserId.discordId}>`, true);
 		if (article.categories.nodes.length) {
 			embed.addField('Categories', article.categories.nodes.map(q => q.name).join(', '));
@@ -43,7 +43,7 @@ module.exports = class extends Task {
 							pageInfo { endCursor }
 						}
                     }`;
-			fetch('https://gw2trivia.com/api/graphql', {
+			fetch(`${process.env.WEBSITEURL}/api/graphql`, {
                 method: "post",
                 headers: {
                     'Accept': 'application/json',

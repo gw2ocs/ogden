@@ -16,10 +16,10 @@ module.exports = class extends Task {
 		}
 		const embed = new MessageEmbed()
 			.setColor(0x00c7ff)
-			.setAuthor(question.userByUserId.username, question.userByUserId.avatarUrl, `https://gw2trivia.com/questions?user_id=${question.userByUserId.id}`)
+			.setAuthor(question.userByUserId.username, question.userByUserId.avatarUrl, `${process.env.WEBSITEURL}/questions?user_id=${question.userByUserId.id}`)
 			.setTimestamp(new Date(question.createdAt))
 			.setTitle(question.spoil ? `||${title}||` : title)
-			.setURL(`https://gw2trivia.com/questions/view/${question.id}/${question.slug}`)
+			.setURL(`${process.env.WEBSITEURL}/questions/view/${question.id}/${question.slug}`)
 			.addField('Points', question.points, true)
 			.addField('Auteur', `<@${question.userByUserId.discordId}>`, true);
 		if (question.categories.nodes.length) {
@@ -48,7 +48,7 @@ module.exports = class extends Task {
 							pageInfo { endCursor }
 						}
                     }`;
-			fetch('https://gw2trivia.com/api/graphql', {
+			fetch(`${process.env.WEBSITEURL}/api/graphql}`, {
                 method: "post",
                 headers: {
                     'Accept': 'application/json',

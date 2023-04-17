@@ -36,7 +36,7 @@ module.exports = class extends Task {
 						}
 					}`;
 			const token = this.client.getJwtToken();
-			fetch('https://gw2trivia.com/api/graphql', {
+			fetch(`${process.env.WEBSITEURL}/api/graphql`, {
                 method: "post",
                 headers: {
                     'Accept': 'application/json',

@@ -13,7 +13,7 @@ module.exports = class extends Task {
 					allUsers { nodes { id discordId avatar } }
 				}`;
 
-		const users = await fetch('https://gw2trivia.com/api/graphql', {
+		const users = await fetch(`${process.env.WEBSITEURL}/api/graphql`, {
 			method: "post",
 			headers: {
 				'Accept': 'application/json',
@@ -31,7 +31,7 @@ module.exports = class extends Task {
 			if (u.avatar !== users[i].avatar) {
 				const update_query = `mutation { updateUserByDiscordId(input: {userPatch: {avatar: ${JSON.stringify(u.avatar)}}, discordId: ${JSON.stringify(u.id)}}) { clientMutationId } }`;
 				console.log(update_query);
-				fetch('https://gw2trivia.com/api/graphql', {
+				fetch(`${process.env.WEBSITEURL}/api/graphql`, {
 					method: "post",
 					headers: {
 						'Accept': 'application/json',

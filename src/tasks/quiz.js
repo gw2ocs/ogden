@@ -15,7 +15,7 @@ module.exports = class extends Task {
 
     async randomSlug(guild) {
         if (guild.settings.questions_todo.length === 0) {
-            const list = await fetch('https://gw2trivia.com/api/graphql', {
+            const list = await fetch(`${process.env.WEBSITEURL}/api/graphql`, {
                 method: "post",
                 headers: {
                     'Accept': 'application/json',
@@ -48,8 +48,8 @@ module.exports = class extends Task {
         const duration = _guild.settings.config.default_duration || 1200;
         const token = this.client.getJwtToken();
         const slug = await this.randomSlug(_guild);
-        console.log(`Loading question ${slug}`);
-        const question = await fetch('https://gw2trivia.com/api/graphql', {
+        console.log(`Loading question ${slug} for ${channel.name} ${_guild.name}`);
+        const question = await fetch(`${process.env.WEBSITEURL}/api/graphql`, {
             method: "post",
             headers: {
                 'Accept': 'application/json',

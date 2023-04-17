@@ -37,7 +37,7 @@ module.exports = class extends Command {
     async randomSlug(msg) {
         console.log(msg.guild.settings.questions_todo);
         if (msg.guild.settings.questions_todo.length === 0) {
-            const list = await fetch('https://gw2trivia.com/api/graphql', {
+            const list = await fetch(`${process.env.WEBSITEURL}/api/graphql`, {
                 method: "post",
                 headers: {
                     'Accept': 'application/json',
@@ -78,7 +78,7 @@ module.exports = class extends Command {
         //id = id || this.randomId(questions);
         //const question = questions.get(id);
         const token = this.client.getJwtToken();
-        const question = await fetch('https://gw2trivia.com/api/graphql', {
+        const question = await fetch(`${process.env.WEBSITEURL}/api/graphql`, {
             method: "post",
             headers: {
                 'Accept': 'application/json',

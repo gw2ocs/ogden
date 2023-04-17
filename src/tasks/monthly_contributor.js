@@ -10,7 +10,7 @@ module.exports = class extends Task {
 
 	async run(metadata) {
 		const today = DateTime.local().minus({ months: 1 });
-		const count_by_users = await fetch('https://gw2trivia.com/api/graphql', {
+		const count_by_users = await fetch(`${process.env.WEBSITEURL}/api/graphql`, {
                 method: "post",
                 headers: {
                     'Accept': 'application/json',
