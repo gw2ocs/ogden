@@ -3,15 +3,18 @@ version: '3'
 services:
   node:
     build: .
+    image: ogden-node:${OGDEN_VERSION:-latest}
+    environment:
+      - NODE_ENV=${NODE_ENV:-production}
     networks:
-      - default
       - gw2trivia_bridge
     volumes:
-      - ./bwd:/usr/src/app/src/bwd
+      - ./bwd/${NODE_ENV}:/usr/src/app/src/bwd
       - /usr/src/app/node_modules
     env_file:
-      - .env
+      - .env.${NODE_ENV}
     command: npm start
 networks:
   gw2trivia_bridge:
+    name: gw2trivia_${NODE_ENV}_bridge
     external: true
