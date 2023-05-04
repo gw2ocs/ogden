@@ -9,12 +9,12 @@ services:
     networks:
       - gw2trivia_bridge
     volumes:
-      - ./bwd/${NODE_ENV}:/usr/src/app/src/bwd
+      - ./bwd/${NODE_ENV:-production}:/usr/src/app/src/bwd
       - /usr/src/app/node_modules
     env_file:
-      - .env.${NODE_ENV}
+      - .env.${NODE_ENV:-production}
     command: npm start
 networks:
   gw2trivia_bridge:
-    name: gw2trivia_${NODE_ENV}_bridge
+    name: gw2trivia_${NODE_ENV:-production}_bridge
     external: true
