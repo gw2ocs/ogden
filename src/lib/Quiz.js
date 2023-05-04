@@ -224,7 +224,8 @@ module.exports = class {
         const text = message.content;
         return this.question.answers
             .some(ans => ans.content.split(/\s*;\s*/)
-                .every(str => new RegExp(diacritics(str.trim()).replace(/ /g, '.*').replace(/[’'-]/g, '.'), "gi").test(diacritics(text).replace(/-/g, ' '))));
+                .every(str => RegExp(diacritics(str.trim()).replace(/ /g, '.*').replace(/[’'-]/g, '.').replace(/([\d+]+)/g, '\\b$1\\b'), "gi")
+                    .test(diacritics(text).replace(/-/g, ' '))));
     }
 
 };
