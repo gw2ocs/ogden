@@ -48,7 +48,7 @@ module.exports = class extends Task {
 							pageInfo { endCursor }
 						}
                     }`;
-			fetch(`${process.env.WEBSITEURL}/api/graphql}`, {
+			fetch(`${process.env.WEBSITEURL}/api/graphql`, {
                 method: "post",
                 headers: {
                     'Accept': 'application/json',
