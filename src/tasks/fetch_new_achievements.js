@@ -22,17 +22,16 @@ module.exports = class extends Task {
 		const guilds = [...this.client.guilds.cache.values()];
 		for (let i = 0, imax = guilds.length ; i < imax ; i++) {
 			const guild = guilds[i];
-			const last_cursor = this.client.settings.last_achievement_cursor;
+			const { last_achievement_check } = await this.client.getDBClient(this.client);
 			const news_channel = guild.channels.resolve(guild.settings.channels.news);
 			if (!news_channel) continue;
 			const query = `{
-						allAchievementsUsersRels(${last_cursor && `after: ${JSON.stringify(last_cursor)}, ` || ''}orderBy: CREATED_AT_ASC) {
+						allAchievementsUsersRels(${last_achievement_check && `filter: {createdAt: {greaterThan: ${JSON.stringify(last_achievement_check)}}}, ` || ''}orderBy: CREATED_AT_ASC) {
 							nodes {
 								userByUserId { id discordId username discriminator avatarUrl }
 								achievementByAchievementId { description icon name theme }
 								createdAt
 							}
-							pageInfo { endCursor }
 						}
 					}`;
 			const token = this.client.getJwtToken();
@@ -47,10 +46,7 @@ module.exports = class extends Task {
             })
                 .then(response => response.json())
                 .then(async response => {
-				if (response.data.allAchievementsUsersRels.pageInfo.endCursor) {
-					this.client.settings.update('last_achievement_cursor', response.data.allAchievementsUsersRels.pageInfo.endCursor);
-					this.client.settings.sync();
-				}
+				await this.client.pg.query('UPDATE gw2trivia.clients SET last_achievement_check = $1 WHERE discord_id = $2', [(new Date()).toLocaleString('en-US-u-hc-h23', {timeZone: 'Europe/Paris', dateStyle: "short", timeStyle: "medium"}), this.client.user.id]);
 				for (let i = 0, imax = response.data.allAchievementsUsersRels.nodes.length ; i < imax ; i++) {
 					const achievement = response.data.allAchievementsUsersRels.nodes[i];
 					await this.post_new_achievement(guild, news_channel, achievement);

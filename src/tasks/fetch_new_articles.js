@@ -30,11 +30,11 @@ module.exports = class extends Task {
 		const guilds = [...this.client.guilds.cache.values()];
 		for (let i = 0, imax = guilds.length ; i < imax ; i++) {
 			const guild = guilds[i];
-			const last_cursor = this.client.settings.last_article_cursor;
+			const { last_article_check } = await this.client.getDBClient(this.client);
 			const news_channel = guild.channels.resolve(guild.settings.channels.news);
 			if (!news_channel) continue;
 			const query = `{
-						allArticles(filter: { validatedAt: {isNull: false} }${last_cursor && `, after: ${JSON.stringify(last_cursor)}` || ''}) {
+						allArticles${last_article_check && `(filter: {validatedAt: {greaterThan: ${JSON.stringify(last_article_check)}}})` || ''} {
 							nodes {
 								userByUserId { id discordId username discriminator avatarUrl }
 								categories { nodes { name } }
@@ -53,10 +53,7 @@ module.exports = class extends Task {
             })
                 .then(response => response.json())
                 .then(async response => {
-				if (response.data.allArticles.pageInfo.endCursor) {
-					this.client.settings.update('last_article_cursor', response.data.allArticles.pageInfo.endCursor);
-					this.client.settings.sync();
-				}
+				await this.client.pg.query('UPDATE gw2trivia.clients SET last_article_check = $1 WHERE discord_id = $2', [(new Date()).toLocaleString('en-US-u-hc-h23', {timeZone: 'Europe/Paris', dateStyle: "short", timeStyle: "medium"}), this.client.user.id]);
 				for (let i = 0, imax = response.data.allArticles.nodes.length ; i < imax ; i++) {
 					const article = response.data.allArticles.nodes[i];
 					await this.post_new_article(guild, news_channel, article);

@@ -86,12 +86,32 @@ class Ogden extends Client {
 		if (current !== url) guild.setIcon(url).catch(console.error);
 	}
 
+	async getDBClient(client) {
+		const { user: { id: discordId, name } } = client;
+		let { rowCount, rows } = await this.pg.query(`SELECT * FROM gw2trivia.clients WHERE discord_id = '${discordId}'`);
+        if (rowCount === 0) {
+            ({ rowCount, rows } = await this.pg.query(`INSERT INTO gw2trivia.clients (discord_id, name)
+            VALUES ($1, $2) RETURNING *`, [discordId, name]));
+        }
+        return rows[0];
+	}
+
 	async getDBUser(user) {
 		const { id: discordId, username, discriminator, avatar } = user;
 		let { rowCount, rows } = await this.pg.query(`SELECT * FROM gw2trivia.users WHERE discord_id = '${discordId}'`);
         if (rowCount === 0) {
             ({ rowCount, rows } = await this.pg.query(`INSERT INTO gw2trivia.users (username, discord_id, discriminator, avatar, locale)
             VALUES ($1, $2, $3, $4, $5) RETURNING *`, [username, discordId, discriminator, avatar, 'fr']));
+        }
+        return rows[0];
+	}
+
+	async getDBGuild(guild) {
+		const { id: discordId, name, icon, description, ownerID } = guild;
+		let { rowCount, rows } = await this.pg.query(`SELECT * FROM gw2trivia.guilds WHERE discord_id = '${discordId}'`);
+        if (rowCount === 0) {
+            ({ rowCount, rows } = await this.pg.query(`INSERT INTO gw2trivia.guilds (discord_id, name, icon, description, owner_id)
+            VALUES ($1, $2, $3, $4, $5) RETURNING *`, [discordId, name, icon, description, ownerID]));
         }
         return rows[0];
 	}
@@ -109,6 +129,12 @@ class Ogden extends Client {
 	async checkDBUser(user) {
 		const { id: discordId } = user;
 		const { rowCount } = await this.pg.query(`SELECT * FROM gw2trivia.users WHERE discord_id = '${discordId}'`);
+        return rowCount !== 0;
+	}
+
+	async checkDBGuild(guild) {
+		const { id: discordId } = guild;
+		const { rowCount } = await this.pg.query(`SELECT * FROM gw2trivia.guilds WHERE discord_id = '${discordId}'`);
         return rowCount !== 0;
 	}
 

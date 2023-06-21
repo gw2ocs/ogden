@@ -35,17 +35,16 @@ module.exports = class extends Task {
 		const guilds = [...this.client.guilds.cache.values()];
 		for (let i = 0, imax = guilds.length ; i < imax ; i++) {
 			const guild = guilds[i];
-			const last_cursor = this.client.settings.last_question_cursor;
+			const { last_question_check } = await this.client.getDBClient(this.client);
 			const news_channel = guild.channels.resolve(guild.settings.channels.news);
 			if (!news_channel) continue;
 			const query = `{
-						allQuestions${last_cursor && `(after: ${JSON.stringify(last_cursor)})` || ''} {
+						allQuestions${last_question_check && `(filter: {createdAt: {greaterThan: ${JSON.stringify(last_question_check)}}})` || ''} {
 							nodes {
 								userByUserId { id discordId username discriminator avatarUrl }
 								categories { nodes { name } }
 								points slug title id createdAt spoil
 							}
-							pageInfo { endCursor }
 						}
                     }`;
 			fetch(`${process.env.WEBSITEURL}/api/graphql`, {
@@ -58,10 +57,7 @@ module.exports = class extends Task {
             })
                 .then(response => response.json())
                 .then(async response => {
-				if (response.data.allQuestions.pageInfo.endCursor) {
-					this.client.settings.update('last_question_cursor', response.data.allQuestions.pageInfo.endCursor);
-					this.client.settings.sync();
-				}
+				await this.client.pg.query('UPDATE gw2trivia.clients SET last_question_check = $1 WHERE discord_id = $2', [(new Date()).toLocaleString('en-US-u-hc-h23', {timeZone: 'Europe/Paris', dateStyle: "short", timeStyle: "medium"}), this.client.user.id]);
 				if (response.data.allQuestions.nodes.length > 1) {
 					await news_channel.send(`${response.data.allQuestions.nodes.length} nouvelles questions ont été postées sur <https://gw2trivia.com>:`);
 				} else if (response.data.allQuestions.nodes.length > 0) {
