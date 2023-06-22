@@ -14,34 +14,13 @@ module.exports = class extends Task {
     }
 
     async randomSlug(guild) {
-        if (guild.settings.questions_todo.length === 0) {
-            const list = await fetch(`${process.env.WEBSITEURL}/api/graphql`, {
-                method: "post",
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    query: `{
-                      allQuestions(filter: { validated: { isNull: false } } ) {
-                        nodes { id slug }
-                      }
-                    }`
-                })
-            })
-                .then(response => response.json())
-                .then(response => response.data.allQuestions.nodes.map(node => node.id));
-            for (let i = list.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [list[i], list[j]] = [list[j], list[i]];
-            }
-            for (let i = 0, imax = list.length ; i < imax ; i++) {
-                await guild.settings.update('questions_todo', list[i], { action: 'add' });
-            }
-        }
-        const slug = guild.settings.questions_todo[0];
-        await guild.settings.update('questions_todo', slug, { action: 'remove' });
-        return slug;
+        const { rows: ids } = await this.client.pg.query(`SELECT id FROM gw2trivia.questions where id NOT in (
+            SELECT question_id FROM gw2trivia.stats
+            WHERE guild_snowflake = $1
+            ORDER BY id DESC LIMIT 500
+        )`, [guild.id]);
+        const randomIdx = Math.floor(Math.random() * ids.length);
+        return ids[randomIdx].id;
     }
 
     async launchQuiz(_guild, channel) {
