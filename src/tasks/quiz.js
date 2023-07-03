@@ -14,11 +14,11 @@ module.exports = class extends Task {
     }
 
     async randomSlug(guild) {
-        const { rows: ids } = await this.client.pg.query(`SELECT id FROM gw2trivia.questions where id NOT in (
+        const { rows: ids } = await this.client.pg.query(`SELECT id FROM gw2trivia.questions WHERE id NOT in (
             SELECT question_id FROM gw2trivia.stats
             WHERE guild_snowflake = $1
             ORDER BY id DESC LIMIT 500
-        )`, [guild.id]);
+        ) AND validated IS NOT NULL`, [guild.id]);
         const randomIdx = Math.floor(Math.random() * ids.length);
         return ids[randomIdx].id;
     }
