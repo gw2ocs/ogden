@@ -57,7 +57,7 @@ module.exports = class extends Task {
             })
                 .then(response => response.json())
                 .then(async response => {
-				await this.client.pg.query('UPDATE gw2trivia.clients SET last_question_check = $1 WHERE discord_id = $2', [(new Date()).toLocaleString('en-US-u-hc-h23', {timeZone: 'Europe/Paris', dateStyle: "short", timeStyle: "medium"}), this.client.user.id]);
+				await this.client.pg.query('UPDATE gw2trivia.clients SET last_question_check = $1 WHERE discord_id = $2', [(new Date()).toLocaleString('en-US-u-hc-h23', {timeZone: 'UTC', dateStyle: "short", timeStyle: "medium"}), this.client.user.id]);
 				if (response.data.allQuestions.nodes.length > 1) {
 					await news_channel.send(`${response.data.allQuestions.nodes.length} nouvelles questions ont été postées sur <https://gw2trivia.com>:`);
 				} else if (response.data.allQuestions.nodes.length > 0) {

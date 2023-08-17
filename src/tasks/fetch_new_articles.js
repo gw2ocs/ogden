@@ -53,7 +53,7 @@ module.exports = class extends Task {
             })
                 .then(response => response.json())
                 .then(async response => {
-				await this.client.pg.query('UPDATE gw2trivia.clients SET last_article_check = $1 WHERE discord_id = $2', [(new Date()).toLocaleString('en-US-u-hc-h23', {timeZone: 'Europe/Paris', dateStyle: "short", timeStyle: "medium"}), this.client.user.id]);
+				await this.client.pg.query('UPDATE gw2trivia.clients SET last_article_check = $1 WHERE discord_id = $2', [(new Date()).toLocaleString('en-US-u-hc-h23', {timeZone: 'UTC', dateStyle: "short", timeStyle: "medium"}), this.client.user.id]);
 				for (let i = 0, imax = response.data.allArticles.nodes.length ; i < imax ; i++) {
 					const article = response.data.allArticles.nodes[i];
 					await this.post_new_article(guild, news_channel, article);
