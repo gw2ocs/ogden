@@ -25,14 +25,25 @@ module.exports = class extends Task {
 			const { rowCount: scoreCount, rows: scoreRows } = await this.client.pg.query(`SELECT u.discord_id AS uid, amount FROM gw2trivia.scores s
 			LEFT JOIN gw2trivia.activities act ON act.id = s.activity_id
 			LEFT JOIN gw2trivia.users u ON u.id = s.user_id
-			WHERE act.ref = 'quiz_mensual' AND act.guild_id = '${guild.id}'
-			ORDER BY amount desc`);
+			WHERE act.ref = 'quiz_mensual' AND act.guild_id = '${guild.id}' AND amount > 0
+			ORDER BY amount desc
+			LIMIT 3`);
 			if (scoreCount) {
-				const firstScore = scoreRows[0].amount;
+				const texts = [];
 				const first = guild.members.resolve(scoreRows[0].uid);
 				if (first) {
 					first.roles.add(role);
-					news_channel.send(`Félicitations à ${first} qui a obtenu le rôle de ${role} avec ${scoreRows[0].amount} points ce mois-ci.`);
+					texts.push(`Félicitations à ${first} qui a obtenu le rôle de ${role} avec ${scoreRows[0].amount} points ce mois-ci.`);
+				}
+				if (scoreCount > 2) {
+					const second = guild.members.resolve(scoreRows[1].uid);
+					const third = guild.members.resolve(scoreRows[2].uid);
+					if (second && third) {
+						texts.push(`Bravo également à ${second} (${scoreRows[1].amount} points) et à ${third} (${scoreRows[2].amount} points).`)
+					}
+				}
+				if (texts) {
+					news_channel.send(texts.join('\n'))
 				}
 			}
 			/*const list = (await guild.members.fetch())
