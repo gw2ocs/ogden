@@ -7,7 +7,7 @@ import { ApplicationCommandType, ApplicationIntegrationType, InteractionContextT
 	description: 'Obtenez des informations sur la façon d\'aider Ogden dans ses projets.',
 	aliases: ['donation'],
 	detailedDescription: [
-		`Le projet de Questions pour un Quaggan a commencé en 2018 et n'était, à l'origine, qu'un bot avec quelques questions. Depuis, le projet a bien évolué et comprend maintenant le site <https://gw2trivia.com>, de nombreux articles sur le lore et plus de 1000 questions`,
+		`Le projet de Questions pour un Quaggan a commencé en 2018 et n'était, à l'origine, qu'un bot avec quelques questions. Depuis, le projet a bien évolué et comprend maintenant le site <https://gw2trivia.com>, de nombreux articles sur le lore et plus de 4000 questions`,
 		'',
 		`Cependant, tout n'est pas gratuit et nous avons besoin de votre aide pour garder Ogden en vie.`,
 		`Nous serons très reconnaissants si vous nous aidez.`,
