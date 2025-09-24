@@ -11,7 +11,6 @@ import { ArticleEntity } from "#lib/database/entities/ArticleEntity";
 import { ImageEntity } from "#lib/database/entities/ImageEntity";
 import { QuestionEntity } from "#lib/database/entities/QuestionEntity";
 import { QuestionsReactionsUsersRelEntity } from "#lib/database/entities/QuestionsReactionsUsersRelEntity";
-import { GuildsUsersRelEntity } from "#lib/database/entities/GuildsUsersRelEntity";
 
 @Index("users_discord_id_uniq", ["discordId"], { unique: true })
 @Index("users_pkey", ["id"], { unique: true })
@@ -67,9 +66,6 @@ export class UserEntity {
 
   @ManyToMany(() => ArticleEntity, (articles) => articles.users)
   articles3!: ArticleEntity[];
-
-  @OneToMany(() => GuildsUsersRelEntity, (guildsUsersRel) => guildsUsersRel.user)
-  guildsUsersRels!: GuildsUsersRelEntity[];
 
   @OneToMany(() => ImageEntity, (images) => images.user)
   images!: ImageEntity[];

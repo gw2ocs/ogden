@@ -8,7 +8,6 @@ import {
 	ClientEntity,
 	GroupEntity,
 	GuildEntity,
-	GuildsUsersRelEntity,
 	ImageEntity,
 	QuestionEntity,
 	StatEntity,
@@ -26,7 +25,6 @@ export class OgdenOrm {
 	public readonly clients: Repository<ClientEntity>
 	public readonly groups: Repository<GroupEntity>
 	public readonly guilds: Repository<GuildEntity>
-	public readonly guildsUsersRel: Repository<GuildsUsersRelEntity>
 	public readonly images: Repository<ImageEntity>
 	public readonly questions: Repository<QuestionEntity>
 	public readonly stats: Repository<StatEntity>
@@ -43,7 +41,6 @@ export class OgdenOrm {
 		this.clients = this.source.getRepository(ClientEntity);
 		this.groups = this.source.getRepository(GroupEntity);
 		this.guilds = this.source.getRepository(GuildEntity);
-		this.guildsUsersRel = this.source.getRepository(GuildsUsersRelEntity);
 		this.images = this.source.getRepository(ImageEntity);
 		this.questions = this.source.getRepository(QuestionEntity);
 		this.stats = this.source.getRepository(StatEntity);

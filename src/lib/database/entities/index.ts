@@ -6,7 +6,6 @@ export * from '#lib/database/entities/CategorieEntity';
 export * from '#lib/database/entities/ClientEntity';
 export * from '#lib/database/entities/GroupEntity';
 export * from '#lib/database/entities/GuildEntity';
-export * from '#lib/database/entities/GuildsUsersRelEntity';
 export * from '#lib/database/entities/ImageEntity';
 export * from '#lib/database/entities/QuestionEntity';
 export * from '#lib/database/entities/QuestionsReactionsUsersRelEntity';

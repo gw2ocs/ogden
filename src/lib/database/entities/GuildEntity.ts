@@ -3,35 +3,33 @@ import {
 	Column,
 	Entity,
 	Index,
-	OneToMany,
-	PrimaryGeneratedColumn,
+	PrimaryColumn,
 } from "typeorm";
-import { GuildsUsersRelEntity } from "#lib/database/entities/GuildsUsersRelEntity";
 
-@Index("guilds_pkey", ["id"], { unique: true })
-@Entity("guilds", { schema: "ogden" })
+@Index("guilds_pkey", ["discordId"], { unique: true })
+@Entity("guilds", { schema: "gw2trivia" })
 export class GuildEntity extends BaseEntity {
-	@PrimaryGeneratedColumn({ type: "integer", name: "id" })
-	id!: number;
-
-	@Column("character varying", { name: "discord_id" })
+	@PrimaryColumn("character varying", { name: "discord_id" })
 	discordId!: string;
 
-	@Column("character varying", { name: "bot_channel_id", nullable: true })
-	botChannelId!: string | null;
+	@Column("character varying", { name: "name" })
+	name!: string;
 
-	@Column("character varying", { name: "quiz_channel_id", nullable: true })
-	quizChannelId!: string | null;
+	@Column("character varying", { name: "bot_channel", nullable: true })
+	botChannel!: string | null;
 
-	@Column("character varying", { name: "news_channel_id", nullable: true })
-	newsChannelId!: string | null;
+	@Column("character varying", { name: "quiz_channel", nullable: true })
+	quizChannel!: string | null;
+
+	@Column("character varying", { name: "news_channel", nullable: true })
+	newsChannel!: string | null;
 
 	@Column("boolean", {
-		name: "quiz_auto",
+		name: "quiz_auto_enabled",
 		nullable: true,
 		default: () => "false",
 	})
-	quizAuto!: boolean | null;
+	quizAutoEnabled!: boolean | null;
 
 	@Column("character varying", {
 		name: "quiz_cron",
@@ -50,26 +48,23 @@ export class GuildEntity extends BaseEntity {
 	@Column("character varying", { name: "last_winner", nullable: true })
 	lastWinner!: string | null;
 
-	@Column("character varying", { name: "last_icon", nullable: true })
-	lastIcon!: string | null;
+	//@Column("character varying", { name: "last_icon", nullable: true })
+	//lastIcon!: string | null;
 
-	@Column("character varying", { name: "subscriber_role_id", nullable: true })
-	subscriberRoleId!: string | null;
-
-	@Column("character varying", {
-		name: "monthly_winner_role_id",
-		nullable: true,
-	})
-	monthlyWinnerRoleId!: string | null;
+	@Column("character varying", { name: "subscribers_role", nullable: true })
+	subscribersRole!: string | null;
 
 	@Column("character varying", {
-		name: "monthly_contributor_role_id",
+		name: "monthly_winner_role",
 		nullable: true,
 	})
-	monthlyContributorRoleId!: string | null;
+	monthlyWinnerRole!: string | null;
 
-	@OneToMany(() => GuildsUsersRelEntity, (guildsUsersRel) => guildsUsersRel.guild)
-	guildsUsersRels!: GuildsUsersRelEntity[];
+	@Column("character varying", {
+		name: "monthly_contributor_role",
+		nullable: true,
+	})
+	monthlyContributorRole!: string | null;
 
 	/*public get client() {
 		return Store.injectedContext.client;
