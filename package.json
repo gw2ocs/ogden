@@ -51,6 +51,8 @@
     "#lib/database/settings": "./dist/lib/database/settings/index.js",
     "#lib/database/repositories": "./dist/lib/database/repositories/index.js",
     "#lib/database": "./dist/lib/database/index.js",
+    "#lib/structures/managers": "./dist/lib/structures/managers/index.js",
+    "#lib/structures/pieces": "./dist/lib/structures/pieces/index.js",
     "#lib/structures": "./dist/lib/structures/index.js",
     "#lib/*": "./dist/lib/*.js",
     "#root/*": "./dist/*.js"

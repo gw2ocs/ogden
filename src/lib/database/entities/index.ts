@@ -13,5 +13,6 @@ export * from '#lib/database/entities/ReactionEntity';
 export * from '#lib/database/entities/RoleEntity';
 export * from '#lib/database/entities/StatEntity';
 export * from '#lib/database/entities/StatsMessageEntity';
+export * from '#lib/database/entities/TaskEntity';
 export * from '#lib/database/entities/TipEntity';
 export * from '#lib/database/entities/UserEntity';

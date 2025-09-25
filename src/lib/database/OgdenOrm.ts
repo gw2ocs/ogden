@@ -12,12 +12,13 @@ import {
 	QuestionEntity,
 	StatEntity,
 	StatsMessageEntity,
+	TaskEntity,
 	TipEntity,
 	UserEntity
 } from "#lib/database/entities";
 
 export class OgdenOrm {
-	public readonly source: DataSource;
+	public readonly connection: DataSource;
 	public readonly achievements: Repository<AchievementEntity>
 	public readonly answers: Repository<AnswerEntity>
 	public readonly articles: Repository<ArticleEntity>
@@ -29,24 +30,26 @@ export class OgdenOrm {
 	public readonly questions: Repository<QuestionEntity>
 	public readonly stats: Repository<StatEntity>
 	public readonly statMessages: Repository<StatsMessageEntity>
+	public readonly tasks: Repository<TaskEntity>
 	public readonly tips: Repository<TipEntity>
 	public readonly users: Repository<UserEntity>
 
 	private constructor(dataSource: DataSource) {
-		this.source = dataSource;
-		this.achievements = this.source.getRepository(AchievementEntity);
-		this.answers = this.source.getRepository(AnswerEntity);
-		this.articles = this.source.getRepository(ArticleEntity);
-		this.categories = this.source.getRepository(CategorieEntity);
-		this.clients = this.source.getRepository(ClientEntity);
-		this.groups = this.source.getRepository(GroupEntity);
-		this.guilds = this.source.getRepository(GuildEntity);
-		this.images = this.source.getRepository(ImageEntity);
-		this.questions = this.source.getRepository(QuestionEntity);
-		this.stats = this.source.getRepository(StatEntity);
-		this.statMessages = this.source.getRepository(StatsMessageEntity);
-		this.tips = this.source.getRepository(TipEntity);
-		this.users = this.source.getRepository(UserEntity);
+		this.connection = dataSource;
+		this.achievements = this.connection.getRepository(AchievementEntity);
+		this.answers = this.connection.getRepository(AnswerEntity);
+		this.articles = this.connection.getRepository(ArticleEntity);
+		this.categories = this.connection.getRepository(CategorieEntity);
+		this.clients = this.connection.getRepository(ClientEntity);
+		this.groups = this.connection.getRepository(GroupEntity);
+		this.guilds = this.connection.getRepository(GuildEntity);
+		this.images = this.connection.getRepository(ImageEntity);
+		this.questions = this.connection.getRepository(QuestionEntity);
+		this.stats = this.connection.getRepository(StatEntity);
+		this.statMessages = this.connection.getRepository(StatsMessageEntity);
+		this.tasks = this.connection.getRepository(TaskEntity);
+		this.tips = this.connection.getRepository(TipEntity);
+		this.users = this.connection.getRepository(UserEntity);
 	}
 
 	public static instance: OgdenOrm | null = null;
