@@ -1,20 +1,17 @@
-import { Column, Entity, Index, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, Index, PrimaryColumn } from "typeorm";
 
-@Index("clients_pkey", ["id"], { unique: true })
+@Index("clients_pkey", ["discordId"], { unique: true })
 @Entity("clients", { schema: "gw2trivia" })
 export class ClientEntity {
-	@PrimaryGeneratedColumn({ type: "integer", name: "id" })
-	id!: number;
-
-	@Column("character varying", { name: "discord_id", default: process.env.CLIENT_ID })
+	@PrimaryColumn("character varying", { name: "discord_id", default: process.env.CLIENT_ID })
 	discordId: string | undefined = process.env.CLIENT_ID;
 
-	@Column("integer", { name: "last_question_id", nullable: true })
-	lastQuestionId!: number | null;
+	@Column("timestamp without time zone", { name: "last_question_check", nullable: true })
+	lastQuestionCheck!: Date | null;
 
-	@Column("integer", { name: "last_achievement_id", nullable: true })
-	lastAchievementId!: number | null;
+	@Column("timestamp without time zone", { name: "last_achievement_check", nullable: true })
+	lastAchievementCheck!: Date | null;
 
-	@Column("integer", { name: "last_article_id", nullable: true })
-	lastArticleId!: number | null;
+	@Column("timestamp without time zone", { name: "last_article_check", nullable: true })
+	lastArticleCheck!: Date | null;
 }

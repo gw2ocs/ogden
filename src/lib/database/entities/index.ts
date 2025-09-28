@@ -1,5 +1,6 @@
 export * from '#lib/database/entities/AchievementEntity';
 export * from '#lib/database/entities/AchievementsUsersRelEntity';
+export * from '#lib/database/entities/ActivityEntity';
 export * from '#lib/database/entities/AnswerEntity';
 export * from '#lib/database/entities/ArticleEntity';
 export * from '#lib/database/entities/CategorieEntity';
@@ -11,6 +12,7 @@ export * from '#lib/database/entities/QuestionEntity';
 export * from '#lib/database/entities/QuestionsReactionsUsersRelEntity';
 export * from '#lib/database/entities/ReactionEntity';
 export * from '#lib/database/entities/RoleEntity';
+export * from '#lib/database/entities/ScoreEntity';
 export * from '#lib/database/entities/StatEntity';
 export * from '#lib/database/entities/StatsMessageEntity';
 export * from '#lib/database/entities/TaskEntity';

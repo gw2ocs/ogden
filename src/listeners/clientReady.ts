@@ -1,3 +1,4 @@
+import { Schedules } from '#lib/types';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Listener } from '@sapphire/framework';
 import type { StoreRegistryValue } from '@sapphire/pieces';
@@ -9,9 +10,19 @@ const dev = process.env.NODE_ENV !== 'production';
 export class UserEvent extends Listener {
 	private readonly style = dev ? yellow : blue;
 
-	public override run() {
+	public async run() {
+		await this.initFetchQuestionsTask().catch((error) => this.container.logger.fatal(error));
+
 		this.printBanner();
 		this.printStoreDebugInformation();
+	}
+
+	private async initFetchQuestionsTask() {
+		const { logger, schedule: { queue } } = this.container;
+		if (!queue.some((task) => task.taskId === Schedules.FetchNewQuestions)) {
+			logger.info('Scheduling fetchNewQuestions task to run every 15 minutes');
+			await this.container.schedule.add(Schedules.FetchNewQuestions, '*/15 * * * *');
+		}
 	}
 
 	private printBanner() {

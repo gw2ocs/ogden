@@ -16,7 +16,8 @@ declare module 'discord.js' {
 
 declare module '@sapphire/pieces' {
 	interface Container {
-		db: OgdenOrm
+		db: OgdenOrm,
+		schedule: TaskManager;
 	}
 
 	interface StoreRegistryEntries {
