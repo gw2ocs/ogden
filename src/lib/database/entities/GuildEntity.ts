@@ -3,8 +3,10 @@ import {
 	Column,
 	Entity,
 	Index,
+	OneToMany,
 	PrimaryColumn,
 } from "typeorm";
+import { ChannelEntity } from "#lib/database";
 
 @Index("guilds_pkey", ["discordId"], { unique: true })
 @Entity("guilds", { schema: "gw2trivia" })
@@ -65,6 +67,9 @@ export class GuildEntity extends BaseEntity {
 		nullable: true,
 	})
 	monthlyContributorRole!: string | null;
+
+	@OneToMany(() => ChannelEntity, (channels) => channels.guild)
+	channels!: ChannelEntity[];
 
 	/*public get client() {
 		return Store.injectedContext.client;

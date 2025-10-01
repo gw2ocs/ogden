@@ -4,6 +4,7 @@ export * from '#lib/database/entities/ActivityEntity';
 export * from '#lib/database/entities/AnswerEntity';
 export * from '#lib/database/entities/ArticleEntity';
 export * from '#lib/database/entities/CategorieEntity';
+export * from '#lib/database/entities/ChannelEntity';
 export * from '#lib/database/entities/ClientEntity';
 export * from '#lib/database/entities/GroupEntity';
 export * from '#lib/database/entities/GuildEntity';
