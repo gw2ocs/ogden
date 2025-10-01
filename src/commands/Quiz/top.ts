@@ -1,5 +1,5 @@
 import { ApplyOptions } from '@sapphire/decorators';
-import { PaginatedMessage, type EmbedResolvable } from '@sapphire/discord.js-utilities';
+import { PaginatedMessage, type AnyInteractableInteraction, type EmbedResolvable } from '@sapphire/discord.js-utilities';
 import { Args, Command } from '@sapphire/framework';
 import type { Message } from 'discord.js';
 import { EmbedBuilder } from 'discord.js';
@@ -20,6 +20,46 @@ export class UserCommand extends Command {
         const time = await args.pick('string').catch(() => 'all');
         logger.info(`Top command called by ${message.author.displayName} (${message.author.id}) with number=${number}, activity=${activity} and time=${time}`);
 
+        const paginatedMessage = await this.run(message, number, activity, time);
+
+        await paginatedMessage.run(response, message.author);
+        return response;
+    }
+
+    public override registerApplicationCommands(registry: Command.Registry) {
+        registry.registerChatInputCommand((builder) =>
+            builder
+                .setName(this.name)
+                .setDescription(this.description)
+                .addIntegerOption((option) =>
+                    option
+                        .setName('number')
+                        .setDescription('Number of scores to display (default: 3)')
+                )
+                .addStringOption((option) =>
+                    option
+                        .setName('activity')
+                        .setDescription('Activity (default: quiz)')
+                )
+                .addStringOption((option) =>
+                    option
+                        .setName('time')
+                        .setDescription('Possible values if activity is "quiz": "annuel", "mensuel", "global" or "all" (default: all)')
+                )
+        );
+    }
+
+    public override async chatInputRun(interaction: Command.ChatInputCommandInteraction) {
+        const number = interaction.options.getInteger('number') ?? 3;
+        const activity = interaction.options.getString('activity') ?? 'quiz';
+        const time = interaction.options.getString('time') ?? 'all';
+        
+        const paginatedMessage = await this.run(interaction, number, activity, time);
+
+        return paginatedMessage.run(interaction);
+    }
+
+    private async run(messageOrInteraction: Message | AnyInteractableInteraction, number: number, activity: string, time: string) {
         const paginatedMessage = new PaginatedMessage({
             template: new EmbedBuilder()
                 .setColor('#FF0000')
@@ -29,25 +69,24 @@ export class UserCommand extends Command {
 
         if (activity === 'quiz') {
             if (['all', 'mensuel'].indexOf(time) !== -1) {
-                paginatedMessage.addPageEmbed(await this.generateTopEmbed(message, number, 'quiz_mensual'), );
+                paginatedMessage.addPageEmbed(await this.generateTopEmbed(messageOrInteraction, number, 'quiz_mensual'), );
             }
             if (['all', 'annuel'].indexOf(time) !== -1) {
-                paginatedMessage.addPageEmbed(await this.generateTopEmbed(message, number, 'quiz_annual'));
+                paginatedMessage.addPageEmbed(await this.generateTopEmbed(messageOrInteraction, number, 'quiz_annual'));
             }
             if (['all', 'global'].indexOf(time) !== -1) {
-                paginatedMessage.addPageEmbed(await this.generateTopEmbed(message, number, 'quiz'));
+                paginatedMessage.addPageEmbed(await this.generateTopEmbed(messageOrInteraction, number, 'quiz'));
             }
         } else {
-            paginatedMessage.addPageEmbed(await this.generateTopEmbed(message, number, activity));
+            paginatedMessage.addPageEmbed(await this.generateTopEmbed(messageOrInteraction, number, activity));
         }
 
-        await paginatedMessage.run(response, message.author);
-        return response;
+        return paginatedMessage;
     }
 
-    private async generateTopEmbed(message: Message, number: number, activity: string): Promise<EmbedResolvable> {
+    private async generateTopEmbed(messageOrInteraction: Message | AnyInteractableInteraction, number: number, activity: string): Promise<EmbedResolvable> {
         const { db } = this.container;
-        const activityDb = await db.activities.findOne({ where: { ref: activity, guildId: message.guild?.id } });
+        const activityDb = await db.activities.findOne({ where: { ref: activity, guildId: messageOrInteraction.guild?.id } });
         if (!activityDb) {
             throw new Error(`L'activité ${activity} n'existe pas sur ce serveur.`);
         }
