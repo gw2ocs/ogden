@@ -18,7 +18,7 @@ export class TaskManager {
 		this._checkInterval();
 	}
 
-	public async add(taskId: string, timeResolvable: TimeResolvable, options: ScheduleManagerAddOptions = {}) {
+	public async add(taskId: string, timeResolvable: TimeResolvable, options: TaskManagerAddOptions = {}) {
 		if (!container.stores.get('tasks').has(taskId)) throw new Error(`The task '${taskId}' does not exist.`);
 
 		const [time, cron] = this._resolveTime(timeResolvable);
@@ -197,7 +197,7 @@ export class TaskManager {
 	}
 }
 
-export interface ScheduleManagerAddOptions {
+export interface TaskManagerAddOptions {
 	/**
 	 * If the task should try to catch up if the bot is down.
 	 */
