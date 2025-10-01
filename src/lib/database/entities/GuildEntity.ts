@@ -6,7 +6,7 @@ import {
 	OneToMany,
 	PrimaryColumn,
 } from "typeorm";
-import { ChannelEntity } from "#lib/database";
+import { ChannelEntity, QuizEntity } from "#lib/database";
 
 @Index("guilds_pkey", ["discordId"], { unique: true })
 @Entity("guilds", { schema: "gw2trivia" })
@@ -70,6 +70,9 @@ export class GuildEntity extends BaseEntity {
 
 	@OneToMany(() => ChannelEntity, (channels) => channels.guild)
 	channels!: ChannelEntity[];
+
+	@OneToMany(() => QuizEntity, (quizzes) => quizzes.guild)
+	quizzes!: QuizEntity[];
 
 	/*public get client() {
 		return Store.injectedContext.client;

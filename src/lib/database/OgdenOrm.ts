@@ -6,10 +6,12 @@ import {
 	AnswerEntity,
 	ArticleEntity,
 	CategorieEntity,
+	ChannelEntity,
 	GroupEntity,
 	GuildEntity,
 	ImageEntity,
 	QuestionEntity,
+	QuizEntity,
 	ScoreEntity,
 	StatEntity,
 	StatsMessageEntity,
@@ -26,11 +28,13 @@ export class OgdenOrm {
 	public readonly answers: Repository<AnswerEntity>
 	public readonly articles: Repository<ArticleEntity>
 	public readonly categories: Repository<CategorieEntity>
+	public readonly channels: Repository<ChannelEntity>
 	public readonly clients: typeof ClientRepository
 	public readonly groups: Repository<GroupEntity>
 	public readonly guilds: Repository<GuildEntity>
 	public readonly images: Repository<ImageEntity>
 	public readonly questions: Repository<QuestionEntity>
+	public readonly quizzes: Repository<QuizEntity>
 	public readonly scores: Repository<ScoreEntity>
 	public readonly stats: Repository<StatEntity>
 	public readonly statMessages: Repository<StatsMessageEntity>
@@ -45,11 +49,13 @@ export class OgdenOrm {
 		this.answers = this.connection.getRepository(AnswerEntity);
 		this.articles = this.connection.getRepository(ArticleEntity);
 		this.categories = this.connection.getRepository(CategorieEntity);
+		this.channels = this.connection.getRepository(ChannelEntity);
 		this.clients = ClientRepository;
 		this.groups = this.connection.getRepository(GroupEntity);
 		this.guilds = this.connection.getRepository(GuildEntity);
 		this.images = this.connection.getRepository(ImageEntity);
 		this.questions = this.connection.getRepository(QuestionEntity);
+		this.quizzes = this.connection.getRepository(QuizEntity);
 		this.scores = this.connection.getRepository(ScoreEntity);
 		this.stats = this.connection.getRepository(StatEntity);
 		this.statMessages = this.connection.getRepository(StatsMessageEntity);

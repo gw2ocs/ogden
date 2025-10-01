@@ -1,4 +1,4 @@
-import { GuildEntity } from "#lib/database";
+import { GuildEntity, QuizEntity } from "#lib/database";
 import {
     BaseEntity,
     Column,
@@ -6,6 +6,7 @@ import {
     Index,
     JoinColumn,
     ManyToOne,
+    OneToMany,
     PrimaryColumn,
     type Relation,
 } from "typeorm";
@@ -69,4 +70,7 @@ export class ChannelEntity extends BaseEntity {
     })
     @JoinColumn([{ name: "guild_id", referencedColumnName: "discordId" }])
     guild!: Relation<GuildEntity>;
+    
+    @OneToMany(() => QuizEntity, (quizzes) => quizzes.channel)
+    quizzes!: QuizEntity[];
 }

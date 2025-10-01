@@ -11,6 +11,7 @@ export * from '#lib/database/entities/GuildEntity';
 export * from '#lib/database/entities/ImageEntity';
 export * from '#lib/database/entities/QuestionEntity';
 export * from '#lib/database/entities/QuestionsReactionsUsersRelEntity';
+export * from '#lib/database/entities/QuizEntity';
 export * from '#lib/database/entities/ReactionEntity';
 export * from '#lib/database/entities/RoleEntity';
 export * from '#lib/database/entities/ScoreEntity';
