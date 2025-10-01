@@ -1,7 +1,7 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { Command } from '@sapphire/framework';
 import { send } from '@sapphire/plugin-editable-commands';
-import { ApplicationCommandType, ApplicationIntegrationType, InteractionContextType, type Message } from 'discord.js';
+import { ApplicationIntegrationType, InteractionContextType, type Message } from 'discord.js';
 
 @ApplyOptions<Command.Options>({
 	description: 'Présentation d\'Ogden.',
@@ -31,22 +31,6 @@ export class UserCommand extends Command {
 		registry.registerChatInputCommand({
 			name: this.name,
 			description: this.description,
-			integrationTypes,
-			contexts
-		});
-
-		// Register context menu command available from any message
-		registry.registerContextMenuCommand({
-			name: this.name,
-			type: ApplicationCommandType.Message,
-			integrationTypes,
-			contexts
-		});
-
-		// Register context menu command available from any user
-		registry.registerContextMenuCommand({
-			name: this.name,
-			type: ApplicationCommandType.User,
 			integrationTypes,
 			contexts
 		});
