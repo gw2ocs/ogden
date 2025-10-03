@@ -18,6 +18,9 @@ export class TipEntity {
   @Column("text", { name: "content" })
   content!: string;
 
+  @Column("integer", { name: "question_id" })
+  questionId!: number;
+
   @Column("timestamp without time zone", {
     name: "created_at",
     default: () => "LOCALTIMESTAMP",
@@ -33,7 +36,9 @@ export class TipEntity {
   @Column("integer", { name: "updated_by", nullable: true })
   updatedBy!: number | null;
 
-  @ManyToOne(() => QuestionEntity, (questions) => questions.tips)
-  @JoinColumn([{ name: "questionId", referencedColumnName: "id" }])
+  @ManyToOne(() => QuestionEntity, (questions) => questions.tips, {
+      onDelete: "CASCADE",
+  })
+  @JoinColumn([{ name: "question_id", referencedColumnName: "id" }])
   question!: Relation<QuestionEntity>;
 }

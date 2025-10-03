@@ -31,6 +31,7 @@
     "@skyra/env-utilities": "^2.0.1",
     "colorette": "^2.0.20",
     "discord.js": "^14.22.1",
+    "modern-diacritics": "^2.3.1",
     "pg": "^8.16.3",
     "reflect-metadata": "^0.2.2",
     "typeorm": "^0.3.27"
@@ -54,7 +55,7 @@
     "#lib/structures/managers": "./dist/lib/structures/managers/index.js",
     "#lib/structures/pieces": "./dist/lib/structures/pieces/index.js",
     "#lib/structures": "./dist/lib/structures/index.js",
-		"#lib/types": "./dist/lib/types/index.js",
+    "#lib/types": "./dist/lib/types/index.js",
     "#lib/*": "./dist/lib/*.js",
     "#root/*": "./dist/*.js"
   },

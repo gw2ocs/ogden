@@ -1,10 +1,12 @@
 import { OgdenOrm } from "#lib/database";
 import { TaskStore } from "#lib/structures";
+import type { QuizManager } from "#lib/structures/managers/QuizManager";
 import type { TaskManager } from "#lib/structures/managers/TaskManager";
 
 declare module 'discord.js' {
 	interface Client {
 		readonly schedules: TaskManager;
+		readonly quizzes: QuizManager;
 	}
 
 	interface ClientOptions {

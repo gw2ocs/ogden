@@ -16,10 +16,10 @@ import {
 	StatEntity,
 	StatsMessageEntity,
 	TaskEntity,
-	TipEntity,
-	UserEntity
+	TipEntity
 } from "#lib/database/entities";
 import { ClientRepository } from './repositories/ClientRepository.js';
+import { UserRepository } from './repositories/UserRepository.js';
 
 export class OgdenOrm {
 	public readonly connection: DataSource;
@@ -40,7 +40,7 @@ export class OgdenOrm {
 	public readonly statMessages: Repository<StatsMessageEntity>
 	public readonly tasks: Repository<TaskEntity>
 	public readonly tips: Repository<TipEntity>
-	public readonly users: Repository<UserEntity>
+	public readonly users: typeof UserRepository
 
 	private constructor(dataSource: DataSource) {
 		this.connection = dataSource;
@@ -61,7 +61,7 @@ export class OgdenOrm {
 		this.statMessages = this.connection.getRepository(StatsMessageEntity);
 		this.tasks = this.connection.getRepository(TaskEntity);
 		this.tips = this.connection.getRepository(TipEntity);
-		this.users = this.connection.getRepository(UserEntity);
+		this.users = UserRepository;
 	}
 
 	public static instance: OgdenOrm | null = null;

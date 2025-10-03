@@ -98,9 +98,8 @@ export class UserCommand extends Command {
             relations: ['activity', 'user'],
             //select: ['amount', 'user'],
         });
-        console.log(scores);
         const embed = new EmbedBuilder()
-            .setColor('#FF0000')
+            .setColor('#c7bd36ff')
             .setTitle(`🏆 **TOP ${number} ${activityDb.name}** 🏆`);
         
         if (scores.length === 0) {

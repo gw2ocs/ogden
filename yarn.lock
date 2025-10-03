@@ -1725,6 +1725,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"modern-diacritics@npm:^2.3.1":
+  version: 2.3.1
+  resolution: "modern-diacritics@npm:2.3.1"
+  checksum: 10c0/bd99755646d630dd51eb6da49993ef01ead08a0b103d26b136b0d2a1f2590b8937896db562f722a4b12d42f6564caa613f4de3a0c30a12ca99d99e7cdb92b7ad
+  languageName: node
+  linkType: hard
+
 "ms@npm:^2.1.3":
   version: 2.1.3
   resolution: "ms@npm:2.1.3"
@@ -1891,6 +1898,7 @@ __metadata:
     "@types/ws": "npm:^8.18.1"
     colorette: "npm:^2.0.20"
     discord.js: "npm:^14.22.1"
+    modern-diacritics: "npm:^2.3.1"
     npm-run-all2: "npm:^8.0.4"
     pg: "npm:^8.16.3"
     prettier: "npm:^3.6.2"
