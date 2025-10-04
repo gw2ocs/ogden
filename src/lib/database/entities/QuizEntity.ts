@@ -89,7 +89,16 @@ export class QuizEntity extends BaseEntity {
         return this;
     }
 
-    public resume(): QuizEntity {
+    private stopped = false;
+
+    public async resume(): Promise<QuizEntity> {
+        if (this.messageId && !this.message) {
+            const channel = await container.client.channels.fetch(this.channelId).catch(() => null);
+            if (channel?.isTextBased()) {
+                const _message = await channel.messages.fetch(this.messageId).catch(() => null);
+                if (_message) this._message = _message;
+            }
+        }
         const timeLeft = this.endsAt.getTime() - new Date().getTime();
         setTimeout(() => {
             this.stop();
@@ -104,6 +113,7 @@ export class QuizEntity extends BaseEntity {
     }
 
     public stop() {
+        this.stopped = true;
         this.message.edit({ embeds: [this.render()], components: [] });
         this.manager.stopQuiz(this);
     }
@@ -124,7 +134,7 @@ export class QuizEntity extends BaseEntity {
                 this.embed.addFields({ name: 'Catégories', value: this.question.categories.map(c => c.name).join(', '), inline: false });
             }
         }
-        if (new Date().getTime() > this.endsAt.getTime()) {
+        if (this.stopped) {
             description.push('**Fini !**');
         } else {
             description.push(`Fin : <t:${Math.floor(this.endsAt.getTime() / 1000)}:R> ⏰`);

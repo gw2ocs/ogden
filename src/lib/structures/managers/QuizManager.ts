@@ -10,7 +10,7 @@ export class QuizManager {
         const { quizzes } = container.db;
         const entries = await quizzes.find({relations: ["channel", "guild", "question", "question.answers", "question.images", "question.categories", "question.tips", "question.user", "winners"]});
 
-        for (const entry of entries) this._insert(entry.setup(this).resume());
+        for (const entry of entries) this._insert(await entry.setup(this).resume());
     }
     
     private _insert(entity: QuizEntity) {
@@ -76,7 +76,7 @@ export class QuizManager {
         const { logger } = container;
         logger.info(`Starting quiz in guild ${guild.id} (${guild.name}) on channel ${channel.id} (${channel.name}) with question ${_question.id} (${_question.title})`);
 
-        this._insert(quiz.setup(this).resume());
+        this._insert(await quiz.setup(this).resume());
 
         const { role: _role } = _channel;
         const role = _role ? guild.roles.cache.get(_role) : null;

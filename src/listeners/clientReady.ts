@@ -11,10 +11,30 @@ export class UserEvent extends Listener {
 	private readonly style = dev ? yellow : blue;
 
 	public async run() {
+		await this.initQuiz().catch((error) => this.container.logger.fatal(error));
 		await this.initFetchQuestionsTask().catch((error) => this.container.logger.fatal(error));
 
 		this.printBanner();
 		this.printStoreDebugInformation();
+	}
+
+	private async initQuiz() {
+		const { logger, schedule: { queue }, db: { channels } } = this.container;
+		const quizChannels = await channels.find({ where: { type: 'quiz', quizAutoEnabled: true } });
+		for (const channel of quizChannels) {
+			try {
+				const task = queue.find((task) => task.taskId === Schedules.Quiz && task.data?.channelId === channel.discordId);
+				if (!task && channel.quizCron) {
+					logger.info(`Scheduling quiz in channel ${channel.discordId}`);
+					await this.container.schedule.add(Schedules.Quiz, channel.quizCron, { data: { channelId: channel.discordId, guildId: channel.guildId } });
+				} else if (task && !channel.quizCron) {
+					logger.info(`Removing scheduled quiz in channel ${channel.discordId} as cron expression was removed`);
+					await this.container.schedule.remove(task);
+				}
+			} catch (error) {
+				logger.error(`Failed to start quiz in channel ${channel.discordId}: ${error}`);
+			}
+		}
 	}
 
 	private async initFetchQuestionsTask() {
