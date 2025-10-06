@@ -4,6 +4,8 @@ node_modules/
 .idea/
 .yarn/
 *.iml
+src/bwd*
+bwd
 
 # Yarn files
 .yarn/install-state.gz
@@ -11,6 +13,10 @@ node_modules/
 
 # Environment variables
 .DS_Store
+
+# dotenv environment variables file
+.env
+.env*
 
 dist/
 
