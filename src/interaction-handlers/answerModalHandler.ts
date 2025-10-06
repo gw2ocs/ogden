@@ -21,12 +21,12 @@ export class ModalHandler extends InteractionHandler {
 			quiz.addWinner(interaction.user);
 			return interaction.reply({
 				content: 'Bonne réponse ! 🎉',
-				ephemeral: true
+				flags: MessageFlags.Ephemeral
 			});
 		}
 		return interaction.reply({
 			content: 'Ce n\'est pas la bonne réponse.',
-			ephemeral: true
+			flags: MessageFlags.Ephemeral
 		});
 	}
 
