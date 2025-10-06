@@ -1,6 +1,6 @@
 import { ChannelEntity, GuildEntity, QuestionEntity, UserEntity } from "#lib/database";
 import type { QuizManager } from "#lib/structures/managers/QuizManager";
-import { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, Message, ModalBuilder, TextInputBuilder, TextInputStyle, User } from "discord.js";
+import { ActionRowBuilder, AttachmentBuilder, bold, ButtonBuilder, ButtonStyle, ContainerBuilder, EmbedBuilder, heading, HeadingLevel, hideLinkEmbed, hyperlink, MediaGalleryBuilder, Message, ModalBuilder, SeparatorSpacingSize, TextInputBuilder, TextInputStyle, time, TimestampStyles, User } from "discord.js";
 import {
     BaseEntity,
     Column,
@@ -59,7 +59,7 @@ export class QuizEntity extends BaseEntity {
     @JoinColumn([{ name: "question_id", referencedColumnName: "id" }])
     question!: Relation<QuestionEntity>;
 
-    @ManyToMany(() => UserEntity)
+    @ManyToMany(() => UserEntity, { eager: true })
     @JoinTable({ name: "quizzes_users_rel", joinColumn: { name: "quiz_id", referencedColumnName: "id" }, inverseJoinColumn: { name: "user_id", referencedColumnName: "discordId" } })
     winners!: Relation<UserEntity[]>;
 
@@ -90,32 +90,74 @@ export class QuizEntity extends BaseEntity {
     }
 
     private stopped = false;
+    private showTips = false;
 
     public async resume(): Promise<QuizEntity> {
         if (this.messageId && !this.message) {
-            const channel = await container.client.channels.fetch(this.channelId).catch(() => null);
+            const channel = await container.client.channels.fetch(this.channelId).catch(container.logger.error);
             if (channel?.isTextBased()) {
-                const _message = await channel.messages.fetch(this.messageId).catch(() => null);
+                const _message = await channel.messages.fetch(this.messageId).catch(container.logger.error);
                 if (_message) this._message = _message;
             }
         }
+
         const timeLeft = this.endsAt.getTime() - new Date().getTime();
         setTimeout(() => {
             this.stop();
         }, timeLeft);
         const timeMiddle = this.startedAt.getTime() + this.duration * 500 - new Date().getTime();
-        if (new Date().getTime() < timeMiddle) {
-            setTimeout(() => {
-                this.message.edit({ embeds: [this.render()] });
-            }, timeMiddle);
-        }
+        setTimeout(() => {
+            this.showTips = true;
+            if (this.message) this.message.edit({ components: this.components });
+        }, timeMiddle);
         return this;
     }
 
     public stop() {
         this.stopped = true;
-        this.message.edit({ embeds: [this.render()], components: [] });
+        if (this.message) this.message.edit({ components: this.components });
         this.manager.stopQuiz(this);
+    }
+
+    public renderv2(): ContainerBuilder {
+        let color = 0xc7c7c7;
+
+        const component = new ContainerBuilder()
+            .addTextDisplayComponents(
+                textDisplay => textDisplay
+                    .setContent(
+                        heading(
+                            hyperlink(this.question.title, hideLinkEmbed(`${process.env.WEBSITEURL}/questions/view/${this.question.id}/${this.question.slug}`)), 
+                            HeadingLevel.Three)),
+            );
+
+        if (this.stopped) {
+            color = 0x808080;
+            component.addTextDisplayComponents(d => d.setContent('**Fini !**'));
+        } else {
+            component.addTextDisplayComponents(d => d.setContent(`Fin : ${time(this.endsAt, TimestampStyles.RelativeTime)} ⏰`));
+        }
+
+        if (this.winners && this.winners.length > 0) {
+            color = 0xffd700;
+            component.addTextDisplayComponents(d => d.setContent(`Bonnes réponses : ${this.winners.length}`));
+        }
+
+        if (this.question.categories.length) {
+            component
+                .addSeparatorComponents(sep => sep.setDivider(false).setSpacing(SeparatorSpacingSize.Small))
+                .addTextDisplayComponents(d => d.setContent(`${bold('Catégories :')} ${this.question.categories.map(c => c.name).join(', ')}`));
+        }
+
+        if (this.question.tips.length && this.showTips) {
+            component
+                .addSeparatorComponents(sep => sep.setDivider(false).setSpacing(SeparatorSpacingSize.Small))
+                .addTextDisplayComponents(d => d.setContent(`${bold('Indices :')}${this.question.tips.map(tip => `\n - ||${tip.content}||`).join('')}`));
+        }
+
+        component.setAccentColor(color);
+
+        return component;
     }
 
     public render(): EmbedBuilder {
@@ -147,6 +189,37 @@ export class QuizEntity extends BaseEntity {
             description.push('Indices :', ...this.question.tips.map(tip => ` - ||${tip.content}||`));
         }
         return this.embed.setDescription(description.join('\n'));
+    }
+
+    private _gallery: MediaGalleryBuilder | null = null;
+    public get gallery() {
+        if (!this._gallery) {
+            this._gallery = new MediaGalleryBuilder();
+            for (const img of this.question.images) {
+                this._gallery.addItems(item => item.setURL(`attachment://image_${img.id}.${img.type?.split('/')[1] ?? 'png'}`));
+            }
+        }
+        return this._gallery;
+    }
+
+    private _attachments: AttachmentBuilder[] | null = null;
+    public get attachments() {
+        if (!this._attachments) {
+            this._attachments = [];
+            for (const img of this.question.images) {
+                const base64String = img.content!.toString('utf-8').replace(/^data:image\/\w+;base64,/, "");
+                this._attachments.push(new AttachmentBuilder(Buffer.from(base64String, 'base64'), { name: `image_${img.id}.${img.type?.split('/')[1] ?? 'png'}` }));
+            }
+        }
+        return this._attachments;
+    }
+
+    public get components() {
+        const components: any[] = [this.renderv2()];
+        if (this.question.images.length) components.push(this.gallery);
+        if (!this.stopped)
+            components.push(this.getActionRow().toJSON());
+        return components;
     }
 
     public getActionRow() {
@@ -189,9 +262,11 @@ export class QuizEntity extends BaseEntity {
 
     public async addWinner(user: User) {
         const _user = await container.db.users.ensure(user);
+        container.logger.info(`Actual winners: ${this.winners?.map(u => u.discordId).join(", ")}`);
+        container.logger.info(`Adding winner: ${_user.discordId}`);
         this.winners = [...(this.winners || []), _user];
-        await this.save();
-        return this.message.edit({ embeds: [this.render()] })
+        await this.save().catch(container.logger.error);
+        return this.message.edit({ components: this.components })
     }
 
     public hasUserAnswered(user: User) {

@@ -2,6 +2,7 @@ import { Schedules } from '#lib/types';
 import { ApplyOptions } from '@sapphire/decorators';
 import { Listener } from '@sapphire/framework';
 import type { StoreRegistryValue } from '@sapphire/pieces';
+import { Cron } from '@sapphire/time-utilities';
 import { blue, gray, green, magenta, magentaBright, white, yellow } from 'colorette';
 
 const dev = process.env.NODE_ENV !== 'production';
@@ -24,6 +25,11 @@ export class UserEvent extends Listener {
 		for (const channel of quizChannels) {
 			try {
 				const task = queue.find((task) => task.taskId === Schedules.Quiz && task.data?.channelId === channel.discordId);
+				if (task && channel.quizCron !== task.recurring?.toString()) {
+					logger.info(`Rescheduling quiz in channel ${channel.discordId} to ${channel.quizCron}`);
+					task.recurring = channel.quizCron ? new Cron(channel.quizCron) : null;
+					await task.save();
+				}
 				if (!task && channel.quizCron) {
 					logger.info(`Scheduling quiz in channel ${channel.discordId}`);
 					await this.container.schedule.add(Schedules.Quiz, channel.quizCron, { data: { channelId: channel.discordId, guildId: channel.guildId } });

@@ -1,7 +1,7 @@
 import { QuizEntity, StatEntity } from "#lib/database";
 import { container } from "@sapphire/framework";
 import { Time } from "@sapphire/time-utilities";
-import type { BaseGuildTextChannel, Guild, Message } from "discord.js";
+import { MessageFlags, type BaseGuildTextChannel, type Guild, type Message } from "discord.js";
 
 export class QuizManager {
     public quizzes: QuizEntity[] = [];
@@ -58,7 +58,7 @@ export class QuizManager {
         const _channel = await channels.findOne({ where: { discordId: channel.id }, relations: ["guild"] });
         if (!_channel) throw new Error("Channel not found in database.");
         if (_channel.type !== "quiz") throw new Error("Channel is not a quiz channel.");
-        if (this.quizzes.find(q => q.channelId === channel.id)) throw new Error("A quiz is already running in this channel.");
+        //if (this.quizzes.find(q => q.channelId === channel.id)) throw new Error("A quiz is already running in this channel.");
 
         const guild = channel.guild;
 
@@ -89,7 +89,7 @@ export class QuizManager {
             if (role) {
                 await channel.send(`${role}, voici ma question :`);
             }
-            const message = await channel.send({ embeds: [quiz.render()], components: [quiz.getActionRow().toJSON()] });
+            const message = await channel.send({ components: quiz.components, files: quiz.attachments, flags: MessageFlags.IsComponentsV2 });
             quiz.message = message;
             await quiz.save();
         }, Time.Second * 30);
