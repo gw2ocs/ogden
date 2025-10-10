@@ -12,6 +12,7 @@ import { ImageEntity } from "#lib/database/entities/ImageEntity";
 import { QuestionEntity } from "#lib/database/entities/QuestionEntity";
 import { QuestionsReactionsUsersRelEntity } from "#lib/database/entities/QuestionsReactionsUsersRelEntity";
 import { ScoreEntity } from "./ScoreEntity.js";
+import { container } from "@sapphire/framework";
 
 @Index("users_discord_id_uniq", ["discordId"], { unique: true })
 @Index("users_pkey", ["id"], { unique: true })
@@ -86,5 +87,15 @@ export class UserEntity {
   get avatarUrl() {
   	if (!this.avatar) return `https://cdn.discordapp.com/embed/avatars/${Number(this.discriminator) % 5}.png`;
   	return `https://cdn.discordapp.com/avatars/${this.discordId}/${this.avatar}.${this.avatar.startsWith('a') ? 'gif' : 'png'}`;
+  }
+
+  public async addPoints(activityName: string, points: number, guildId: string) {
+    const { db } = container;
+    const _activity = (await db.activities.findOne({ where: { ref: activityName, guildId } }))
+                    ?? (await db.activities.create({ ref: activityName, guildId }).save());
+    const _score = (await db.scores.findOne({ where: { activityId: _activity.id, userId: this.id } }))
+                    ?? (await db.scores.create({ activityId: _activity.id, userId: this.id }).save());
+    _score.amount += points;
+    return _score.save();
   }
 }

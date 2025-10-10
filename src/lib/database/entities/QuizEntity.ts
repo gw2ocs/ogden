@@ -1,20 +1,20 @@
-import { ChannelEntity, GuildEntity, QuestionEntity, UserEntity } from "#lib/database";
+import { ChannelEntity, GuildEntity, QuestionEntity } from "#lib/database";
 import type { QuizManager } from "#lib/structures/managers/QuizManager";
-import { ActionRowBuilder, AttachmentBuilder, bold, ButtonBuilder, ButtonStyle, ContainerBuilder, EmbedBuilder, heading, HeadingLevel, hideLinkEmbed, hyperlink, MediaGalleryBuilder, Message, ModalBuilder, SeparatorSpacingSize, TextInputBuilder, TextInputStyle, time, TimestampStyles, User } from "discord.js";
+import { ActionRowBuilder, AttachmentBuilder, bold, ButtonBuilder, ButtonStyle, ContainerBuilder, EmbedBuilder, heading, HeadingLevel, hideLinkEmbed, hyperlink, MediaGalleryBuilder, Message, ModalBuilder, SeparatorSpacingSize, subtext, TextInputBuilder, TextInputStyle, time, TimestampStyles, User } from "discord.js";
 import {
     BaseEntity,
     Column,
     Entity,
     Index,
     JoinColumn,
-    JoinTable,
-    ManyToMany,
     ManyToOne,
+    OneToMany,
     PrimaryGeneratedColumn,
     type Relation,
 } from "typeorm";
 import { latinize } from "modern-diacritics";
 import { container } from "@sapphire/framework";
+import { QuizzesUsersRelEntity } from "./QuizzesUsersRelEntity.js";
 
 @Index("quizzes_pkey", ["id"], { unique: true })
 @Entity("quizzes", { schema: "gw2trivia" })
@@ -42,6 +42,9 @@ export class QuizEntity extends BaseEntity {
 
     @Column("timestamp without time zone", { name: "started_at" })
     startedAt!: Date;
+
+    @Column("boolean", { name: 'running' })
+    running!: boolean;
     
     @ManyToOne(() => GuildEntity, (guilds) => guilds.quizzes, {
         onDelete: "CASCADE",
@@ -59,9 +62,8 @@ export class QuizEntity extends BaseEntity {
     @JoinColumn([{ name: "question_id", referencedColumnName: "id" }])
     question!: Relation<QuestionEntity>;
 
-    @ManyToMany(() => UserEntity, { eager: true })
-    @JoinTable({ name: "quizzes_users_rel", joinColumn: { name: "quiz_id", referencedColumnName: "id" }, inverseJoinColumn: { name: "user_id", referencedColumnName: "discordId" } })
-    winners!: Relation<UserEntity[]>;
+    @OneToMany(() => QuizzesUsersRelEntity, (rel) => rel.quiz)
+    winners!: Relation<QuizzesUsersRelEntity[]>;
 
     private manager: QuizManager = null!;
 
@@ -115,6 +117,8 @@ export class QuizEntity extends BaseEntity {
 
     public stop() {
         this.stopped = true;
+        this.running = false;
+        this.save();
         if (this.message) this.message.edit({ components: this.components });
         this.manager.stopQuiz(this);
     }
@@ -128,8 +132,9 @@ export class QuizEntity extends BaseEntity {
                     .setContent(
                         heading(
                             hyperlink(this.question.title, hideLinkEmbed(`${process.env.WEBSITEURL}/questions/view/${this.question.id}/${this.question.slug}`)), 
-                            HeadingLevel.Three)),
-            );
+                            HeadingLevel.Three)))
+            .addTextDisplayComponents(d => d.setContent(`Ajoutée par : [${this.question.user.username}](${process.env.WEBSITEURL}/questions?user_id=${this.question.user.id})`))
+            .addTextDisplayComponents(d => d.setContent(`Points : ${this.question.points}`));
 
         if (this.stopped) {
             color = 0x808080;
@@ -154,6 +159,10 @@ export class QuizEntity extends BaseEntity {
                 .addSeparatorComponents(sep => sep.setDivider(false).setSpacing(SeparatorSpacingSize.Small))
                 .addTextDisplayComponents(d => d.setContent(`${bold('Indices :')}${this.question.tips.map(tip => `\n - ||${tip.content}||`).join('')}`));
         }
+
+        component
+            .addSeparatorComponents(sep => sep.setSpacing(SeparatorSpacingSize.Small))
+            .addTextDisplayComponents(d => d.setContent(subtext('Pour ne rater aucune question, demandez le rôle avec `/subscribe`.')))
 
         component.setAccentColor(color);
 
@@ -261,16 +270,24 @@ export class QuizEntity extends BaseEntity {
     }
 
     public async addWinner(user: User) {
-        const _user = await container.db.users.ensure(user);
-        container.logger.info(`Actual winners: ${this.winners?.map(u => u.discordId).join(", ")}`);
-        container.logger.info(`Adding winner: ${_user.discordId}`);
-        this.winners = [...(this.winners || []), _user];
-        await this.save().catch(container.logger.error);
+        const { db } = container;
+        const _user = await db.users.ensure(user);
+        const rel = new QuizzesUsersRelEntity();
+        rel.quiz = this;
+        rel.user = _user;
+        rel.resolutionDuration = new Date().getTime() - this.startedAt.getTime();
+        await rel.save();
+        if (this.winners) this.winners.push(rel);
+        else this.winners = [rel];
+
+        await Promise.all(['quiz', 'quiz_mensual', 'quiz_annual'].map(activity => _user.addPoints(activity, this.points, this.guild.discordId)));
+
+        await this.save().catch(err => container.logger.error(err));
         return this.message.edit({ components: this.components })
     }
 
     public hasUserAnswered(user: User) {
-        return this.winners?.some(u => u.discordId === user.id) || false;
+        return this.winners?.some(u => u.userId === user.id) || false;
     }
 
     public testAnswer(answer: string): boolean {

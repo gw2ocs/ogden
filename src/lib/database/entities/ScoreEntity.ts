@@ -1,4 +1,5 @@
 import {
+  BaseEntity,
   Column,
   Entity,
   Index,
@@ -11,7 +12,7 @@ import { ActivityEntity, UserEntity } from "#lib/database/entities";
 
 @Index("points_pkey", ["activityId", "userId"], { unique: true })
 @Entity("scores", { schema: "gw2trivia" })
-export class ScoreEntity {
+export class ScoreEntity extends BaseEntity {
   @PrimaryColumn("integer", { name: "activity_id" })
   activityId!: number;
 

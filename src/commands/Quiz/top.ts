@@ -62,7 +62,7 @@ export class UserCommand extends Command {
     private async run(messageOrInteraction: Message | AnyInteractableInteraction, number: number, activity: string, time: string) {
         const paginatedMessage = new PaginatedMessage({
             template: new EmbedBuilder()
-                .setColor('#FF0000')
+                .setColor(0xFF0000)
                 // Be sure to add a space so this is offset from the page numbers!
                 //.setFooter({ text: ' footer after page numbers' })
         });
@@ -99,7 +99,7 @@ export class UserCommand extends Command {
             //select: ['amount', 'user'],
         });
         const embed = new EmbedBuilder()
-            .setColor('#c7bd36ff')
+            .setColor(0xc7bd36)
             .setTitle(`🏆 **TOP ${number} ${activityDb.name}** 🏆`);
         
         if (scores.length === 0) {

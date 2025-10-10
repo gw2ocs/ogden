@@ -20,7 +20,7 @@ export class ModalHandler extends InteractionHandler {
 		if (quiz.testAnswer(interaction.fields.getTextInputValue('quizAnswerInput'))) {
 			quiz.addWinner(interaction.user);
 			return interaction.reply({
-				content: 'Bonne réponse ! 🎉',
+				content: `Bonne réponse ! 🎉\n Vous avez gagné ${quiz.points} points.`,
 				flags: MessageFlags.Ephemeral
 			});
 		}

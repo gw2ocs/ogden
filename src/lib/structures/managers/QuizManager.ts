@@ -8,7 +8,7 @@ export class QuizManager {
 
     public async init() {
         const { quizzes } = container.db;
-        const entries = await quizzes.find({relations: ["channel", "guild", "question", "question.answers", "question.images", "question.categories", "question.tips", "question.user", "winners"]});
+        const entries = await quizzes.find({ where: { running: true }, relations: ["channel", "guild", "question", "question.answers", "question.images", "question.categories", "question.tips", "question.user", "winners"]});
 
         for (const entry of entries) this._insert(await entry.setup(this).resume());
     }
@@ -50,7 +50,6 @@ export class QuizManager {
 
     public async stopQuiz(quiz: QuizEntity) {
         this.quizzes = this.quizzes.filter(q => q.id !== quiz.id);
-        quiz.remove();
     }
 
     public async startQuiz(channel: BaseGuildTextChannel) {
@@ -71,6 +70,7 @@ export class QuizManager {
         quiz.startedAt = new Date();
         quiz.duration = _channel.quizDefaultDuration || 3600;
         quiz.points = _question.points || 1;
+        quiz.running = true;
         await quiz.save();
 
         const { logger } = container;
