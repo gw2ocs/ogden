@@ -2,6 +2,7 @@ import type { DataSource, Repository } from 'typeorm';
 import { connect } from './database.config.js';
 import {
 	AchievementEntity,
+	AchievementsUsersRelEntity,
 	ActivityEntity,
 	AnswerEntity,
 	ArticleEntity,
@@ -24,6 +25,7 @@ import { UserRepository } from './repositories/UserRepository.js';
 export class OgdenOrm {
 	public readonly connection: DataSource;
 	public readonly achievements: Repository<AchievementEntity>
+	public readonly achievementsUsersRels: Repository<AchievementsUsersRelEntity>
 	public readonly activities: Repository<ActivityEntity>
 	public readonly answers: Repository<AnswerEntity>
 	public readonly articles: Repository<ArticleEntity>
@@ -45,6 +47,7 @@ export class OgdenOrm {
 	private constructor(dataSource: DataSource) {
 		this.connection = dataSource;
 		this.achievements = this.connection.getRepository(AchievementEntity);
+		this.achievementsUsersRels: this.connection.getRepository(AchievementsUsersRelEntity);
 		this.activities = this.connection.getRepository(ActivityEntity);
 		this.answers = this.connection.getRepository(AnswerEntity);
 		this.articles = this.connection.getRepository(ArticleEntity);
