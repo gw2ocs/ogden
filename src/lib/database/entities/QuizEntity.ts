@@ -283,7 +283,7 @@ export class QuizEntity extends BaseEntity {
         await Promise.all(['quiz', 'quiz_mensual', 'quiz_annual'].map(activity => _user.addPoints(activity, this.points, this.guild.discordId)));
 
         await this.save().catch(err => container.logger.error(err));
-        return this.message.edit({ components: this.components })
+        return this.message.edit({ components: this.components });
     }
 
     public hasUserAnswered(user: User) {

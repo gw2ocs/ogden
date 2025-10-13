@@ -41,7 +41,7 @@ export class UserTask extends Task {
 			}
 		}
 
-		settings.lastQuestionCheck = new Date();
+		settings.lastAchievementCheck = new Date();
 		await db.clients.save(settings);
 		logger.info(`Posted ${achievements.length} new achievements to news channels.`);
 
