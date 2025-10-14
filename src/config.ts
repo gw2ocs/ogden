@@ -31,5 +31,11 @@ export const CLIENT_OPTIONS: ClientOptions = {
 		GatewayIntentBits.MessageContent
 	],
 	partials: [Partials.Channel],
-	loadMessageCommandListeners: true
+	loadMessageCommandListeners: true,
+	i18n: {
+		fetchLanguage: async (context) => {
+			if (!context.guild) return 'en-US';
+			return 'fr-FR';
+		}
+	}
 };

@@ -5,6 +5,13 @@ __metadata:
   version: 8
   cacheKey: 10
 
+"@babel/runtime@npm:^7.27.6":
+  version: 7.28.4
+  resolution: "@babel/runtime@npm:7.28.4"
+  checksum: 10/6c9a70452322ea80b3c9b2a412bcf60771819213a67576c8cec41e88a95bb7bf01fc983754cda35dc19603eef52df22203ccbf7777b9d6316932f9fb77c25163
+  languageName: node
+  linkType: hard
+
 "@discordjs/builders@npm:^1.11.2":
   version: 1.11.2
   resolution: "@discordjs/builders@npm:1.11.2"
@@ -333,6 +340,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@sapphire/plugin-i18next@npm:^8.0.0":
+  version: 8.0.0
+  resolution: "@sapphire/plugin-i18next@npm:8.0.0"
+  dependencies:
+    "@sapphire/utilities": "npm:^3.18.2"
+    "@skyra/i18next-backend": "npm:^2.0.5"
+    chokidar: "npm:^4.0.3"
+    i18next: "npm:^25.1.2"
+  checksum: 10/d832b40fb2eb8a3648976cb643642dd41914dafd94efc9562e96da9740e74b3ef942530552cef3d62d4461042fcebe723cee9afd014d17cd736b09e6a42ae39e
+  languageName: node
+  linkType: hard
+
 "@sapphire/plugin-logger@npm:^4.1.0":
   version: 4.1.0
   resolution: "@sapphire/plugin-logger@npm:4.1.0"
@@ -483,6 +502,15 @@ __metadata:
     dotenv: "npm:^16.5.0"
     dotenv-expand: "npm:^12.0.2"
   checksum: 10/1575fc2cf12a17fc835dc8b6437176df58f91d78cddd7387c76917f49378830003dbaba04324c3689927ec2d9a71c1982e761aa2e1c9cbd14f1fde180c7a215c
+  languageName: node
+  linkType: hard
+
+"@skyra/i18next-backend@npm:^2.0.5":
+  version: 2.0.6
+  resolution: "@skyra/i18next-backend@npm:2.0.6"
+  dependencies:
+    tslib: "npm:^2.8.1"
+  checksum: 10/bc348e08b758645f7fff6438b87b516f32e9bc0df57ba79773a06b0fef4b35b7540e8037e55e1d802cdbc08d6603eb412dca2feae69f3cb936f4b83759327632
   languageName: node
   linkType: hard
 
@@ -726,6 +754,15 @@ __metadata:
     call-bind-apply-helpers: "npm:^1.0.2"
     get-intrinsic: "npm:^1.3.0"
   checksum: 10/ef2b96e126ec0e58a7ff694db43f4d0d44f80e641370c21549ed911fecbdbc2df3ebc9bddad918d6bbdefeafb60bb3337902006d5176d72bcd2da74820991af7
+  languageName: node
+  linkType: hard
+
+"chokidar@npm:^4.0.3":
+  version: 4.0.3
+  resolution: "chokidar@npm:4.0.3"
+  dependencies:
+    readdirp: "npm:^4.0.1"
+  checksum: 10/bf2a575ea5596000e88f5db95461a9d59ad2047e939d5a4aac59dd472d126be8f1c1ff3c7654b477cf532d18f42a97279ef80ee847972fd2a25410bf00b80b59
   languageName: node
   linkType: hard
 
@@ -1350,6 +1387,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"i18next@npm:^25.1.2":
+  version: 25.6.0
+  resolution: "i18next@npm:25.6.0"
+  dependencies:
+    "@babel/runtime": "npm:^7.27.6"
+  peerDependencies:
+    typescript: ^5
+  peerDependenciesMeta:
+    typescript:
+      optional: true
+  checksum: 10/3eaa354f7028ff6051e4294c09bf518183c6653c019cfeed73fc4504786b3a474c3b55ed6b9832e122ba2538167b3eb85ae71fdd6423fb9ec9ebe2156b061d66
+  languageName: node
+  linkType: hard
+
 "iconv-lite@npm:^0.6.2":
   version: 0.6.3
   resolution: "iconv-lite@npm:0.6.3"
@@ -1886,6 +1937,7 @@ __metadata:
     "@sapphire/framework": "npm:^5.3.7"
     "@sapphire/plugin-api": "npm:^8.3.1"
     "@sapphire/plugin-editable-commands": "npm:^4.0.4"
+    "@sapphire/plugin-i18next": "npm:^8.0.0"
     "@sapphire/plugin-logger": "npm:^4.1.0"
     "@sapphire/plugin-subcommands": "npm:^7.0.1"
     "@sapphire/prettier-config": "npm:^2.0.0"
@@ -2214,6 +2266,13 @@ __metadata:
     string_decoder: "npm:^1.1.1"
     util-deprecate: "npm:^1.0.1"
   checksum: 10/d9e3e53193adcdb79d8f10f2a1f6989bd4389f5936c6f8b870e77570853561c362bee69feca2bbb7b32368ce96a85504aa4cedf7cf80f36e6a9de30d64244048
+  languageName: node
+  linkType: hard
+
+"readdirp@npm:^4.0.1":
+  version: 4.1.2
+  resolution: "readdirp@npm:4.1.2"
+  checksum: 10/7b817c265940dba90bb9c94d82920d76c3a35ea2d67f9f9d8bd936adcfe02d50c802b14be3dd2e725e002dddbe2cc1c7a0edfb1bc3a365c9dfd5a61e612eea1e
   languageName: node
   linkType: hard
 
