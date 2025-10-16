@@ -1,20 +1,20 @@
 {
-    "quizOver": "The quiz is over.",
-    "alreadyAnswered": "You have already answered this question.",
-    "wrongAnswer": "This is not the correct answer.",
-    "goodAnswer_one": "Good answer! 🎉\nYou earned {{points}} point.",
-    "goodAnswer_other": "Good answer! 🎉\nYou earned {{points}} points.",
+    "quizOver": "",
+    "alreadyAnswered": "",
+    "wrongAnswer": "",
+    "goodAnswer_one": "",
+    "goodAnswer_other": "",
     "container": {
-        "author": "Added by:",
-        "points": "Points:",
-        "ended": "**Ended!**",
-        "endsAt": "End:",
-        "goodAnswers": "Good answers:",
-        "categories": "Categories:",
-        "tips": "Tips:",
-        "missNoQuestion": "To ensure you don't miss any questions, request the role with `/subscribe`."
+        "author": "",
+        "points": "",
+        "ended": "",
+        "endsAt": "",
+        "goodAnswers": "",
+        "categories": "",
+        "tips": "",
+        "missNoQuestion": ""
     },
     "modal": {
-        "answer": "Answer"
+        "answer": ""
     }
 }
