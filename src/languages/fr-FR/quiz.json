@@ -1,0 +1,19 @@
+{
+    "quizOver": "The quiz is over.",
+    "alreadyAnswered": "You have already answered this question.",
+    "wrongAnswer": "This is not the correct answer.",
+    "goodAnswer": "Good answer! 🎉\n You earned {points, plural, one {{points} point}, other {{points} points}.",
+    "container": {
+        "author": "Added by:",
+        "points": "Points:",
+        "ended": "**Ended!**",
+        "endsAt": "End:",
+        "goodAnswers": "Good answers:",
+        "categories": "Categories:",
+        "tips": "Tips:",
+        "missNoQuestion": "To ensure you don't miss any questions, request the role with `/subscribe`."
+    },
+    "modal": {
+        "answer": "Answer"
+    }
+}
