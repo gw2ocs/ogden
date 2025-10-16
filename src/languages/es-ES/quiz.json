@@ -2,7 +2,8 @@
     "quizOver": "The quiz is over.",
     "alreadyAnswered": "You have already answered this question.",
     "wrongAnswer": "This is not the correct answer.",
-    "goodAnswer": "Good answer! 🎉\nYou earned {points, plural,\none {{points} point}\nother {{points} points}\n}.",
+    "goodAnswer_one": "Good answer! 🎉\nYou earned {{points}} point.",
+    "goodAnswer_other": "Good answer! 🎉\nYou earned {{points}} points.",
     "container": {
         "author": "Added by:",
         "points": "Points:",
