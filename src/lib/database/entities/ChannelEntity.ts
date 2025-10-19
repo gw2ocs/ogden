@@ -64,6 +64,13 @@ export class ChannelEntity extends BaseEntity {
         default: () => "3600",
     })
     quizDefaultDuration!: number | null;
+
+    @Column("jsonb", { name: "filter" })
+    filter!: {
+        joinAlias: string,
+        joinRelation: string,
+        where: string
+    } | null;
     
     @ManyToOne(() => GuildEntity, (guilds) => guilds.channels, {
         onDelete: "CASCADE",

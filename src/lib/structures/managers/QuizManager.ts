@@ -1,7 +1,7 @@
 import { QuizEntity, StatEntity } from "#lib/database";
 import { container } from "@sapphire/framework";
 import { Time } from "@sapphire/time-utilities";
-import { MessageFlags, type BaseGuildTextChannel, type Guild, type Message } from "discord.js";
+import { MessageFlags, type BaseGuildTextChannel, type Message } from "discord.js";
 
 export class QuizManager {
     public quizzes: QuizEntity[] = [];
@@ -19,9 +19,13 @@ export class QuizManager {
         return entity;
     }
 
-    private async getRandomQuestionId(guild: Guild): Promise<number> {
-        const { questions } = container.db;
-        const ids = await questions.createQueryBuilder("question")
+    private async getRandomQuestionId(channel: BaseGuildTextChannel): Promise<number> {
+        const { questions, channels } = container.db;
+        const _channel = await channels.findOne({ where: { discordId: channel.id } });
+        if (!_channel) {
+            return 0;
+        }
+        let query = questions.createQueryBuilder("question")
             .select("question.id")
             .where((qb) => {
                 const subQuery = qb
@@ -34,15 +38,20 @@ export class QuizManager {
                     .getQuery()
                 return "question.id NOT IN " + subQuery
             })
-            .setParameter("guildId", guild.id)
-            .getMany();
+            .setParameter("guildId", channel.guild.id);
+        if (_channel.filter) {
+            query = query
+                .leftJoin(_channel.filter.joinRelation, _channel.filter.joinAlias)
+                .andWhere(_channel.filter.where);
+        }
+        const ids = await query.getMany();
         const randomIdx = Math.floor(Math.random() * ids.length);
         return ids[randomIdx].id;
     }
 
-    private async getRandomQuestion(guild: Guild) {
+    private async getRandomQuestion(channel: BaseGuildTextChannel) {
         const { questions } = container.db;
-        const id = await this.getRandomQuestionId(guild);
+        const id = await this.getRandomQuestionId(channel);
         const question = await questions.findOne({ where: { id }, relations: ["answers", "images", "categories", "tips", "user"] });
         if (!question) throw new Error("Question not found.");
         return question;
@@ -61,7 +70,7 @@ export class QuizManager {
 
         const guild = channel.guild;
 
-        const _question = await this.getRandomQuestion(guild);
+        const _question = await this.getRandomQuestion(channel);
 
         const quiz = new QuizEntity();
         quiz.channel = _channel;

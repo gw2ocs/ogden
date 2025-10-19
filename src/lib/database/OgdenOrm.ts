@@ -47,7 +47,7 @@ export class OgdenOrm {
 	private constructor(dataSource: DataSource) {
 		this.connection = dataSource;
 		this.achievements = this.connection.getRepository(AchievementEntity);
-		this.achievementsUsersRels: this.connection.getRepository(AchievementsUsersRelEntity);
+		this.achievementsUsersRels = this.connection.getRepository(AchievementsUsersRelEntity);
 		this.activities = this.connection.getRepository(ActivityEntity);
 		this.answers = this.connection.getRepository(AnswerEntity);
 		this.articles = this.connection.getRepository(ArticleEntity);
