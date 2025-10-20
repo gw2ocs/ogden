@@ -68,6 +68,12 @@ export class GuildEntity extends BaseEntity {
 	})
 	monthlyContributorRole!: string | null;
 
+    @Column("character varying", {
+        name: "language",
+        default: () => "en-US"
+    })
+    language!: string | null;
+
 	@OneToMany(() => ChannelEntity, (channels) => channels.guild)
 	channels!: ChannelEntity[];
 

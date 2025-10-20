@@ -1,4 +1,4 @@
-import { LogLevel } from "@sapphire/framework";
+import { container, LogLevel } from "@sapphire/framework";
 import { envParseArray, setup } from "@skyra/env-utilities";
 import { GatewayIntentBits, Partials } from "discord.js";
 import type { ClientOptions } from "discord.js";
@@ -34,8 +34,16 @@ export const CLIENT_OPTIONS: ClientOptions = {
 	loadMessageCommandListeners: true,
 	i18n: {
 		fetchLanguage: async (context) => {
-			if (!context.guild) return 'en-US';
-			return 'fr-FR';
+			const { db } = container;
+			if (context.channel) {
+				const _channel = await db.channels.findOneBy({ discordId: context.channel.id });
+				if (_channel?.language) return _channel.language;
+			}
+			if (context.guild) {
+				const _guild = await db.guilds.findOneBy({ discordId: context.guild.id });
+				if (_guild?.language) return _guild.language;
+			}
+			return 'en-US';
 		}
 	}
 };

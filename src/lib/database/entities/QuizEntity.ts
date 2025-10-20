@@ -15,6 +15,7 @@ import {
 import { latinize } from "modern-diacritics";
 import { container } from "@sapphire/framework";
 import { QuizzesUsersRelEntity } from "./QuizzesUsersRelEntity.js";
+import { fetchT, type TFunction } from "@sapphire/plugin-i18next";
 
 @Index("quizzes_pkey", ["id"], { unique: true })
 @Entity("quizzes", { schema: "gw2trivia" })
@@ -94,12 +95,21 @@ export class QuizEntity extends BaseEntity {
     private stopped = false;
     private showTips = false;
 
+    public _t: TFunction | null = null;
+
     public async resume(): Promise<QuizEntity> {
-        if (this.messageId && !this.message) {
+        if (!this._t || this.messageId && !this.message) {
             const channel = await container.client.channels.fetch(this.channelId).catch(container.logger.error);
-            if (channel?.isTextBased()) {
-                const _message = await channel.messages.fetch(this.messageId).catch(container.logger.error);
-                if (_message) this._message = _message;
+            if (this.messageId && !this.message) {
+                if (channel?.isTextBased()) {
+                    const _message = await channel.messages.fetch(this.messageId).catch(container.logger.error);
+                    if (_message) this._message = _message;
+                }
+            }
+            if (!this._t) {
+                if (channel?.isTextBased()) {
+                    this._t = await fetchT(channel);
+                }
             }
         }
 
@@ -133,36 +143,36 @@ export class QuizEntity extends BaseEntity {
                         heading(
                             hyperlink(this.question.title, hideLinkEmbed(`${process.env.WEBSITEURL}/questions/view/${this.question.id}/${this.question.slug}`)), 
                             HeadingLevel.Three)))
-            .addTextDisplayComponents(d => d.setContent(`Ajoutée par : [${this.question.user.username}](${process.env.WEBSITEURL}/questions?user_id=${this.question.user.id})`))
-            .addTextDisplayComponents(d => d.setContent(`Points : ${this.question.points}`));
+            .addTextDisplayComponents(d => d.setContent(`${this._t!('quiz:container:author')} [${this.question.user.username}](${process.env.WEBSITEURL}/questions?user_id=${this.question.user.id})`))
+            .addTextDisplayComponents(d => d.setContent(`${this._t!('quiz:container:points')} ${this.question.points}`));
 
         if (this.stopped) {
             color = 0x808080;
-            component.addTextDisplayComponents(d => d.setContent('**Fini !**'));
+            component.addTextDisplayComponents(d => d.setContent(this._t!('quiz:container:ended')));
         } else {
-            component.addTextDisplayComponents(d => d.setContent(`Fin : ${time(this.endsAt, TimestampStyles.RelativeTime)} ⏰`));
+            component.addTextDisplayComponents(d => d.setContent(`${this._t!('quiz:container:endsAt')} ${time(this.endsAt, TimestampStyles.RelativeTime)} ⏰`));
         }
 
         if (this.winners && this.winners.length > 0) {
             color = 0xffd700;
-            component.addTextDisplayComponents(d => d.setContent(`Bonnes réponses : ${this.winners.length}`));
+            component.addTextDisplayComponents(d => d.setContent(`${this._t!('quiz:container:goodAnswers')} ${this.winners.length}`));
         }
 
         if (this.question.categories.length) {
             component
                 .addSeparatorComponents(sep => sep.setDivider(false).setSpacing(SeparatorSpacingSize.Small))
-                .addTextDisplayComponents(d => d.setContent(`${bold('Catégories :')} ${this.question.categories.map(c => c.name).join(', ')}`));
+                .addTextDisplayComponents(d => d.setContent(`${bold(this._t!('quiz:container:categories'))} ${this.question.categories.map(c => c.name).join(', ')}`));
         }
 
         if (this.question.tips.length && this.showTips) {
             component
                 .addSeparatorComponents(sep => sep.setDivider(false).setSpacing(SeparatorSpacingSize.Small))
-                .addTextDisplayComponents(d => d.setContent(`${bold('Indices :')}${this.question.tips.map(tip => `\n - ||${tip.content}||`).join('')}`));
+                .addTextDisplayComponents(d => d.setContent(`${bold(this._t!('quiz:container:tips'))}${this.question.tips.map(tip => `\n - ||${tip.content}||`).join('')}`));
         }
 
         component
             .addSeparatorComponents(sep => sep.setSpacing(SeparatorSpacingSize.Small))
-            .addTextDisplayComponents(d => d.setContent(subtext('Pour ne rater aucune question, demandez le rôle avec `/subscribe`.')))
+            .addTextDisplayComponents(d => d.setContent(subtext(this._t!('quiz:container:missNoQuestion'))))
 
         component.setAccentColor(color);
 

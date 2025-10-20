@@ -1,7 +1,8 @@
-import { QuizEntity, StatEntity } from "#lib/database";
+import { QuizEntity } from "#lib/database";
 import { container } from "@sapphire/framework";
+import { fetchT } from "@sapphire/plugin-i18next";
 import { Time } from "@sapphire/time-utilities";
-import { MessageFlags, type BaseGuildTextChannel, type Message } from "discord.js";
+import { MessageFlags, TextChannel, type BaseGuildTextChannel, type Message } from "discord.js";
 
 export class QuizManager {
     public quizzes: QuizEntity[] = [];
@@ -30,15 +31,15 @@ export class QuizManager {
             .where((qb) => {
                 const subQuery = qb
                     .subQuery()
-                    .select("st.questionId")
-                    .from(StatEntity, "st")
-                    .where('st.guild_snowflake = :guildId')
-                    .orderBy("st.id", "DESC")
+                    .select("quiz.questionId")
+                    .from(QuizEntity, "quiz")
+                    .where('quiz.channel_id = :channelId')
+                    .orderBy("quiz.id", "DESC")
                     .limit(500)
                     .getQuery()
                 return "question.id NOT IN " + subQuery
             })
-            .setParameter("guildId", channel.guild.id);
+            .setParameter("channelId", channel.id);
         if (_channel.filter) {
             query = query
                 .leftJoin(_channel.filter.joinRelation, _channel.filter.joinAlias)
@@ -80,6 +81,7 @@ export class QuizManager {
         quiz.duration = _channel.quizDefaultDuration || 3600;
         quiz.points = _question.points || 1;
         quiz.running = true;
+        quiz._t = await fetchT(channel as TextChannel);
         await quiz.save();
 
         const { logger } = container;

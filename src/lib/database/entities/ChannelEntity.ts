@@ -65,6 +65,12 @@ export class ChannelEntity extends BaseEntity {
     })
     quizDefaultDuration!: number | null;
 
+    @Column("character varying", {
+        name: "language",
+        default: () => "en-US"
+    })
+    language!: string | null;
+
     @Column("jsonb", { name: "filter" })
     filter!: {
         joinAlias: string,
