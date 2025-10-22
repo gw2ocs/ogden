@@ -244,7 +244,7 @@ export class QuizEntity extends BaseEntity {
     public getActionRow() {
         const answer = new ButtonBuilder()
             .setCustomId(`quiz_answer_${this.id}`)
-            .setLabel('Répondre')
+            .setLabel(this._t!('quiz:actions:reply'))
             .setStyle(ButtonStyle.Primary);
 
         return new ActionRowBuilder()
@@ -264,7 +264,7 @@ export class QuizEntity extends BaseEntity {
         const quizAnswerInput = new TextInputBuilder()
             .setCustomId('quizAnswerInput')
             // The label is the prompt the user sees for this input
-            .setLabel("Réponse")
+            .setLabel(this._t!('quiz:modal:answer'))
             // Short means only a single line of text
             .setStyle(TextInputStyle.Short)
             .setRequired(true);

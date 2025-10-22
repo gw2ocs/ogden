@@ -1,5 +1,6 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { InteractionHandler, InteractionHandlerTypes } from '@sapphire/framework';
+import { fetchT } from '@sapphire/plugin-i18next';
 import { MessageFlags, type ButtonInteraction } from 'discord.js';
 
 @ApplyOptions<InteractionHandler.Options>({
@@ -8,13 +9,14 @@ import { MessageFlags, type ButtonInteraction } from 'discord.js';
 export class ButtonHandler extends InteractionHandler {
 	public async run(interaction: ButtonInteraction, parsedData: InteractionHandler.ParseResult<this>) {
 		const quizId = parsedData.quizId;
+		const _t = await fetchT(interaction);
 		const quiz = this.container.client.quizzes.getQuiz(Number(quizId));
 		if (!quiz) {
-			return interaction.reply({ content: 'Le quiz est terminé.', flags: MessageFlags.Ephemeral });
+			return interaction.reply({ content: _t('quiz:quizOver'), flags: MessageFlags.Ephemeral });
 		}
 
 		if (quiz.hasUserAnswered(interaction.user)) {
-			return interaction.reply({ content: 'Tu as déjà répondu a cette question.', flags: MessageFlags.Ephemeral });
+			return interaction.reply({ content: _t('quiz:alreadyAnswered'), flags: MessageFlags.Ephemeral });
 		}
 		
 		const modal = quiz.getModal();

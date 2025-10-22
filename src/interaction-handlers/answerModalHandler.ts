@@ -1,5 +1,6 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { InteractionHandler, InteractionHandlerTypes } from '@sapphire/framework';
+import { fetchT } from '@sapphire/plugin-i18next';
 import { MessageFlags, type ModalSubmitInteraction } from 'discord.js';
 
 @ApplyOptions<InteractionHandler.Options>({
@@ -8,24 +9,25 @@ import { MessageFlags, type ModalSubmitInteraction } from 'discord.js';
 export class ModalHandler extends InteractionHandler {
 	public async run(interaction: ModalSubmitInteraction, parsedData: InteractionHandler.ParseResult<this>) {
 		const quizId = parsedData.quizId;
+		const _t = await fetchT(interaction);
 		const quiz = this.container.client.quizzes.getQuiz(Number(quizId));
 		if (!quiz) {
-			return interaction.reply({ content: 'Le quiz est terminé.', flags: MessageFlags.Ephemeral });
+			return interaction.reply({ content: _t('quiz:quizOver'), flags: MessageFlags.Ephemeral });
 		}
 		
 		if (quiz.hasUserAnswered(interaction.user)) {
-			return interaction.reply({ content: 'Tu as déjà répondu a cette question.', flags: MessageFlags.Ephemeral });
+			return interaction.reply({ content: _t('quiz:alreadyAnswered'), flags: MessageFlags.Ephemeral });
 		}
 		
 		if (quiz.testAnswer(interaction.fields.getTextInputValue('quizAnswerInput'))) {
 			quiz.addWinner(interaction.user);
 			return interaction.reply({
-				content: `Bonne réponse ! 🎉\n Vous avez gagné ${quiz.points} points.`,
+				content: _t('quiz:goodAnswer', { count: quiz.points, points: quiz.points }),
 				flags: MessageFlags.Ephemeral
 			});
 		}
 		return interaction.reply({
-			content: 'Ce n\'est pas la bonne réponse.',
+			content: _t('quiz:wrongAnswer'),
 			flags: MessageFlags.Ephemeral
 		});
 	}
