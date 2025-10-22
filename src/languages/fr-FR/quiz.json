@@ -15,7 +15,7 @@
         "missNoQuestion": "Pour ne rater aucune question, demandez le rôle avec `/subscribe`."
     },
     "actions": {
-        "reply": ""
+        "reply": "Répondre"
     },
     "modal": {
         "answer": "Réponse"
