@@ -39,6 +39,7 @@ export class QuizManager {
                     .getQuery()
                 return "question.id NOT IN " + subQuery
             })
+            .andWhere('question.language = :language', { language: _channel.language || 'en-US' })
             .setParameter("channelId", channel.id);
         if (_channel.filter) {
             query = query
@@ -93,12 +94,12 @@ export class QuizManager {
         const role = _role ? guild.roles.cache.get(_role) : null;
         let firstMessage: Message | null = null;
         if (role) {
-            firstMessage = await channel.send(`Oyez, oyez, ${role} ! Dans 30 secondes je poserai ma question. Soyez prêts !`);
+            firstMessage = await channel.send(quiz._t('quiz:alertMessage', { role: role.toString() }) );
         }
         setTimeout(async () => {
             if (firstMessage) firstMessage.delete();
             if (role) {
-                await channel.send(`${role}, voici ma question :`);
+                await channel.send(quiz._t!('quiz:pingMessage', { role: role.toString() }));
             }
             const message = await channel.send({ components: quiz.components, files: quiz.attachments, flags: MessageFlags.IsComponentsV2 });
             quiz.message = message;
