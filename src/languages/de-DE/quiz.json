@@ -4,6 +4,8 @@
     "wrongAnswer": "",
     "goodAnswer_one": "",
     "goodAnswer_other": "",
+    "alertMessage": "",
+    "pingMessage": "",
     "container": {
         "author": "",
         "points": "",
