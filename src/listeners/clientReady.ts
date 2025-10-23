@@ -16,6 +16,8 @@ export class UserEvent extends Listener {
 		await this.initFetchQuestionsTask().catch((error) => this.container.logger.fatal(error));
 		await this.initFetchAchievementsTask().catch((error) => this.container.logger.fatal(error));
 
+		this.container.client.updateActivity();
+
 		this.printBanner();
 		this.printStoreDebugInformation();
 	}

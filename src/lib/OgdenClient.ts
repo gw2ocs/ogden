@@ -4,6 +4,7 @@ import { TaskStore } from "./structures/stores/TaskStore.js";
 import { TaskManager } from "#lib/structures";
 import { Enumerable } from "@sapphire/decorators";
 import { QuizManager } from "./structures/managers/QuizManager.js";
+import { ActivityType } from "discord.js";
 
 export class OgdenClient extends SapphireClient {
 
@@ -40,4 +41,31 @@ export class OgdenClient extends SapphireClient {
         this.schedules.destroy();
         return super.destroy();
     }
+
+    public override updateActivity() {
+		const today = new Date();
+		const day = today.getDay();
+		let activity = '';
+		switch (day) {
+			case 0:
+				// sunday
+				activity = 'Bagarre de barils';
+				break;
+			case 1:
+			case 4:
+				// monday and thursday
+				activity = 'Lancer de crabe';
+				break;
+			case 2:
+			case 5:
+				// tuesday and friday
+				activity = 'Course du Sanctuaire';
+				break;
+			case 3:
+			case 6:
+				// wednesday and saturday
+				activity = 'Survie à Sud-Soleil';
+		}
+		this.user!.setPresence({ activities: [{ name: activity, type: ActivityType.Watching }]});
+	}
 }

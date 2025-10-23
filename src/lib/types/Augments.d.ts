@@ -7,6 +7,8 @@ declare module 'discord.js' {
 	interface Client {
 		readonly schedules: TaskManager;
 		readonly quizzes: QuizManager;
+
+		public updateActivity(): void;
 	}
 
 	interface ClientOptions {
