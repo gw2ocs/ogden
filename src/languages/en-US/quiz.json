@@ -4,6 +4,8 @@
     "wrongAnswer": "This is not the correct answer.",
     "goodAnswer_one": "Good answer! 🎉\nYou earned {{points}} point.",
     "goodAnswer_other": "Good answer! 🎉\nYou earned {{points}} points.",
+    "alertMessage": "Hear ye, hear ye, {{role}}! In 30 seconds, I will ask my question. Be ready!",
+    "pingMessage": "{{role}}, here's my question:",
     "container": {
         "author": "Added by:",
         "points": "Points:",
