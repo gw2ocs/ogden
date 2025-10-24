@@ -8,6 +8,7 @@ export class UserTask extends Task {
         logger.info('Running updateBot task...');
 
         client.updateActivity();
+        client.updateServerAvatar();
 
         return null;
     }

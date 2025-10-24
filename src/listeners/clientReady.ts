@@ -15,6 +15,7 @@ export class UserEvent extends Listener {
 		await this.initQuiz().catch((error) => this.container.logger.fatal(error));
 		await this.initFetchQuestionsTask().catch((error) => this.container.logger.fatal(error));
 		await this.initFetchAchievementsTask().catch((error) => this.container.logger.fatal(error));
+		this.initUpdateBotTask().catch((error) => this.container.logger.fatal(error));
 
 		this.container.client.updateActivity();
 
@@ -51,6 +52,14 @@ export class UserEvent extends Listener {
 		if (!queue.some((task) => task.taskId === Schedules.FetchNewQuestions)) {
 			logger.info('Scheduling fetchNewQuestions task to run every 15 minutes');
 			await this.container.schedule.add(Schedules.FetchNewQuestions, '*/15 * * * *');
+		}
+	}
+
+	private async initUpdateBotTask() {
+		const { logger, schedule: { queue } } = this.container;
+		if (!queue.some((task) => task.taskId === Schedules.UpdateBot)) {
+			logger.info('Scheduling updateBot task to run every day at midnight');
+			await this.container.schedule.add(Schedules.UpdateBot, '0 0 * * *');
 		}
 	}
 

@@ -9,6 +9,7 @@ declare module 'discord.js' {
 		readonly quizzes: QuizManager;
 
 		public updateActivity(): void;
+		public updateServerAvatar(): void;
 	}
 
 	interface ClientOptions {
