@@ -3,7 +3,10 @@ export const enum Schedules {
 	FetchNewArticles = 'fetchNewArticles',
 	FetchNewAchievements = 'fetchNewAchievements',
 	Quiz = 'quiz',
+	ResetAnnualScores = 'resetAnnualScores',
+	ResetMensualScores = 'resetMensualScores',
 	UpdateBot = 'updateBot',
+	UpdateUsersData = 'updateUsersData',
 }
 
 export const enum Quaggans {

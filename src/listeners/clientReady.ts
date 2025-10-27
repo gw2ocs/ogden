@@ -16,6 +16,8 @@ export class UserEvent extends Listener {
 		await this.initFetchQuestionsTask().catch((error) => this.container.logger.fatal(error));
 		await this.initFetchAchievementsTask().catch((error) => this.container.logger.fatal(error));
 		this.initUpdateBotTask().catch((error) => this.container.logger.fatal(error));
+		this.initUpdateUsersDataTask().catch((error) => this.container.logger.fatal(error));
+		this.initResetScoresTasks().catch((error) => this.container.logger.fatal(error));
 
 		this.container.client.updateActivity();
 
@@ -68,6 +70,26 @@ export class UserEvent extends Listener {
 		if (!queue.some((task) => task.taskId === Schedules.FetchNewAchievements)) {
 			logger.info('Scheduling fetchNewAchievements task to run every 15 minutes');
 			await this.container.schedule.add(Schedules.FetchNewAchievements, '*/15 * * * *');
+		}
+	}
+
+	private async initUpdateUsersDataTask() {
+		const { logger, schedule: { queue } } = this.container;
+		if (!queue.some((task) => task.taskId === Schedules.UpdateUsersData)) {
+			logger.info('Scheduling updateUsersData task to run every day at 04:00');
+			await this.container.schedule.add(Schedules.UpdateUsersData, '0 4 * * *');
+		}
+	}
+
+	private async initResetScoresTasks() {
+		const { logger, schedule: { queue } } = this.container;
+		if (!queue.some((task) => task.taskId === Schedules.ResetMensualScores)) {
+			logger.info('Scheduling resetMensualScores task to run at 00:30 the 1st of every month');
+			await this.container.schedule.add(Schedules.ResetMensualScores, '30 0 1 * *');
+		}
+		if (!queue.some((task) => task.taskId === Schedules.ResetAnnualScores)) {
+			logger.info('Scheduling resetAnnualScores task to run at 00:30 the 1st of January');
+			await this.container.schedule.add(Schedules.ResetAnnualScores, '30 0 1 1 *');
 		}
 	}
 
