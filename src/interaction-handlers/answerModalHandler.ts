@@ -22,7 +22,7 @@ export class ModalHandler extends InteractionHandler {
 		if (quiz.testAnswer(interaction.fields.getTextInputValue('quizAnswerInput'))) {
 			quiz.addWinner(interaction.user);
 			return interaction.reply({
-				content: _t('quiz:goodAnswer', { count: quiz.points, points: quiz.points }),
+				content: _t('quiz:goodAnswer', { points: _t('misc:points', { count: quiz.points }) }),
 				flags: MessageFlags.Ephemeral
 			});
 		}

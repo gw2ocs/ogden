@@ -5,6 +5,8 @@ export const enum Schedules {
 	Quiz = 'quiz',
 	ResetAnnualScores = 'resetAnnualScores',
 	ResetMensualScores = 'resetMensualScores',
+	ShoutoutMonthlyWinner = 'shoutoutMonthlyWinner',
+	ShoutoutMonthlyContributors = 'shoutoutMonthlyContributors',
 	UpdateBot = 'updateBot',
 	UpdateUsersData = 'updateUsersData',
 }

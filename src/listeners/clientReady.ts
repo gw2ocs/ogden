@@ -18,6 +18,7 @@ export class UserEvent extends Listener {
 		this.initUpdateBotTask().catch((error) => this.container.logger.fatal(error));
 		this.initUpdateUsersDataTask().catch((error) => this.container.logger.fatal(error));
 		this.initResetScoresTasks().catch((error) => this.container.logger.fatal(error));
+		this.initShoutoutTasks().catch((error) => this.container.logger.fatal(error));
 
 		this.container.client.updateActivity();
 
@@ -90,6 +91,18 @@ export class UserEvent extends Listener {
 		if (!queue.some((task) => task.taskId === Schedules.ResetAnnualScores)) {
 			logger.info('Scheduling resetAnnualScores task to run at 00:30 the 1st of January');
 			await this.container.schedule.add(Schedules.ResetAnnualScores, '30 0 1 1 *');
+		}
+	}
+
+	private async initShoutoutTasks() {
+		const { logger, schedule: { queue } } = this.container;
+		if (!queue.some((task) => task.taskId === Schedules.ShoutoutMonthlyWinner)) {
+			logger.info('Scheduling shoutoutMonthlyWinner task to run at 00:05 the 1st of every month');
+			await this.container.schedule.add(Schedules.ShoutoutMonthlyWinner, '5 0 1 * *');
+		}
+		if (!queue.some((task) => task.taskId === Schedules.ShoutoutMonthlyContributors)) {
+			logger.info('Scheduling shoutoutMonthlyContributors task to run at 00:05 the 1st of every month');
+			await this.container.schedule.add(Schedules.ShoutoutMonthlyContributors, '5 0 1 * *');
 		}
 	}
 
