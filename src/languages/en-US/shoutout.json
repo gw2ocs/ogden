@@ -1,8 +1,8 @@
 {
 	"monthlyWinners": {
 		"first": "🏆 Congratulations to {{user}} who earned the role of {{role}} with {{points}} this month.",
-		"second": "🥈 2nd place: {{user}} with {{points}} point.",
-		"third": "🥉 3d place: {{user}} with {{points}} point."
+		"second": "🥈 2nd place: {{user}} with {{points}}.",
+		"third": "🥉 3d place: {{user}} with {{points}}."
 	},
 	"monthlyContributors": {
 		"first_one": "🏆 Congratulations to {{user}} who earned the role of {{role}} with {{count}} question posted this month.",
