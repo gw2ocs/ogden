@@ -1,15 +1,15 @@
 {
 	"monthlyWinners": {
-		"first": "",
-		"second": "",
-		"third": ""
+		"first": "🏆 Félicitations à {{user}} qui remporte le rôle de {{role}} avec {{points}} ce mois-ci.",
+		"second": "🥈2ᵉ place : {{user}} avec {{points}}.",
+		"third": "🥉3ᵉ place : {{user}} avec {{points}}."
 	},
 	"monthlyContributors": {
-		"first_one": "",
-		"first_other": "",
-		"second_one": "",
-		"second_other": "",
-		"third_one": "",
-		"third_other": ""
+		"first_one": "🏆 Félicitations à {{user}} qui a remporté le rôle de {{role}} avec {{count}} question publiée ce mois-ci.",
+		"first_other": "🏆 Félicitations à {{user}} qui a remporté le rôle de {{role}} avec {{count}} questions publiées ce mois-ci.",
+		"second_one": "🥈2ᵉ place : {{user}} avec {{count}} question publiée.",
+		"second_other": "🥈2ᵉ place : {{user}} avec {{count}} questions publiées.",
+		"third_one": "🥉 3ᵉ place : {{user}} avec {{count}} question publiée.",
+		"third_other": "🥉 3ᵉ place : {{user}} avec {{count}} questions publiées."
 	}
 }
