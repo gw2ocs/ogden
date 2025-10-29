@@ -2,8 +2,7 @@
     "quizOver": "Le quiz est terminé.",
     "alreadyAnswered": "Vous avez déjà répondu à cette question.",
     "wrongAnswer": "Ce n'est pas la bonne réponse.",
-    "goodAnswer_one": "Bonne réponse ! 🎉\nVous avez gagné {{points}} point.",
-    "goodAnswer_other": "Bonne réponse ! 🎉\nVous avez gagné {{points}} points.",
+    "goodAnswer": "Bonne réponse ! 🎉\nVous avez gagné {{points}}.",
     "alertMessage": "Oyez, oyez, {{role}} ! Dans 30 secondes je poserai ma question. Soyez prêts !",
     "pingMessage": "{{role}}, voici ma question :",
     "container": {

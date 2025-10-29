@@ -2,8 +2,7 @@
     "quizOver": "",
     "alreadyAnswered": "",
     "wrongAnswer": "",
-    "goodAnswer_one": "",
-    "goodAnswer_other": "",
+    "goodAnswer": "",
     "alertMessage": "",
     "pingMessage": "",
     "container": {
