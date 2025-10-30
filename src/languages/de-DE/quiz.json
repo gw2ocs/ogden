@@ -1,0 +1,24 @@
+{
+    "quizOver": "",
+    "alreadyAnswered": "",
+    "wrongAnswer": "",
+    "goodAnswer": "",
+    "alertMessage": "",
+    "pingMessage": "",
+    "container": {
+        "author": "",
+        "points": "",
+        "ended": "",
+        "endsAt": "",
+        "goodAnswers": "",
+        "categories": "",
+        "tips": "",
+        "missNoQuestion": ""
+    },
+    "actions": {
+        "reply": ""
+    },
+    "modal": {
+        "answer": ""
+    }
+}

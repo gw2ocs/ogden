@@ -1,0 +1,15 @@
+{
+	"monthlyWinners": {
+		"first": "🏆 Congratulations to {{user}} who earned the role of {{role}} with {{points}} this month.",
+		"second": "🥈 2nd place: {{user}} with {{points}}.",
+		"third": "🥉 3d place: {{user}} with {{points}}."
+	},
+	"monthlyContributors": {
+		"first_one": "🏆 Congratulations to {{user}} who earned the role of {{role}} with {{count}} question posted this month.",
+		"first_other": "🏆 Congratulations to {{user}} who earned the role of {{role}} with {{count}} questions posted this month.",
+		"second_one": "🥈 2nd place: {{user}} with {{count}} question posted.",
+		"second_other": "🥈 2nd place: {{user}} with {{count}} questions posted.",
+		"third_one": "🥉 3d place: {{user}} with {{count}} question posted.",
+		"third_other": "🥉 3d place: {{user}} with {{count}} questions posted."
+	}
+}
