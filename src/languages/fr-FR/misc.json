@@ -1,4 +1,4 @@
 {
-    "points_one": "{{count}} point",
-    "points_other": "{{count}} points"
+    "points_one": "",
+    "points_other": ""
 }
