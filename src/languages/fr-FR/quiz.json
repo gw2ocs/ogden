@@ -1,24 +1,24 @@
 {
-    "quizOver": "",
-    "alreadyAnswered": "",
-    "wrongAnswer": "",
-    "goodAnswer": "",
-    "alertMessage": "",
-    "pingMessage": "",
+    "quizOver": "Le quiz est terminé.",
+    "alreadyAnswered": "Vous avez déjà répondu à cette question.",
+    "wrongAnswer": "Ce n'est pas la bonne réponse.",
+    "goodAnswer": "Bonne réponse ! 🎉\nVous avez gagné {{points}}.",
+    "alertMessage": "Oyez, oyez, {{role}} ! Dans 30 secondes je poserai ma question. Soyez prêts !",
+    "pingMessage": "{{role}}, voici ma question :",
     "container": {
-        "author": "",
-        "points": "",
-        "ended": "",
-        "endsAt": "",
-        "goodAnswers": "",
-        "categories": "",
-        "tips": "",
-        "missNoQuestion": ""
+        "author": "Ajoutée par :",
+        "points": "Points :",
+        "ended": "**Fini !**",
+        "endsAt": "Fin :",
+        "goodAnswers": "Bonnes réponses :",
+        "categories": "Catégories :",
+        "tips": "Indices :",
+        "missNoQuestion": "Pour ne rater aucune question, demandez le rôle avec `/subscribe`."
     },
     "actions": {
-        "reply": ""
+        "reply": "Répondre"
     },
     "modal": {
-        "answer": ""
+        "answer": "Réponse"
     }
 }
