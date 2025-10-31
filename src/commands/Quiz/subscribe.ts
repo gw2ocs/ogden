@@ -3,7 +3,7 @@ import { Command } from '@sapphire/framework';
 import { MessageFlags } from 'discord.js';
 
 @ApplyOptions<Command.Options>({
-    description: 'Affiche le top mensuel, annuel et global.',
+    description: 'Pour être notifié dès qu\'Ogden pose une question. La commande doit être exécutée dans le salon du quiz.',
     generateDashLessAliases: true,
     runIn: 'GUILD_TEXT'
 })
