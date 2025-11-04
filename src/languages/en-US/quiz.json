@@ -16,7 +16,8 @@
         "missNoQuestion": "To ensure you don't miss any questions, request the role with `/subscribe`."
     },
     "actions": {
-        "reply": "Reply"
+        "reply": "Reply",
+        "top": "Ranking"
     },
     "modal": {
         "answer": "Answer"

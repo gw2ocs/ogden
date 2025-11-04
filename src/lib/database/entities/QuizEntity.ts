@@ -236,19 +236,30 @@ export class QuizEntity extends BaseEntity {
     public get components() {
         const components: any[] = [this.renderv2()];
         if (this.question.images.length) components.push(this.gallery);
-        if (!this.stopped)
-            components.push(this.getActionRow().toJSON());
+        const actions = this.getActionRow();
+        if (actions.components.length > 0) components.push(actions.toJSON());
         return components;
     }
 
     public getActionRow() {
-        const answer = new ButtonBuilder()
-            .setCustomId(`quiz_answer_${this.id}`)
-            .setLabel(this._t!('quiz:actions:reply'))
-            .setStyle(ButtonStyle.Primary);
+        const row = new ActionRowBuilder();
+        if (!this.stopped) {
+            const answer = new ButtonBuilder()
+                .setCustomId(`quiz_answer_${this.id}`)
+                .setLabel(this._t!('quiz:actions:reply'))
+                .setStyle(ButtonStyle.Primary);
+            row.addComponents(answer);
+        }
 
-        return new ActionRowBuilder()
-            .addComponents(answer);
+        if (this.winners && this.winners.length > 0) {
+            const top = new ButtonBuilder()
+                .setCustomId(`quiz_top_${this.id}`)
+                .setLabel(this._t!('quiz:actions:top'))
+                .setStyle(ButtonStyle.Secondary);
+            row.addComponents(top);
+        }
+
+        return row;
     }
 
     public getModal() {
