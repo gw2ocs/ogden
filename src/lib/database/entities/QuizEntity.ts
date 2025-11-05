@@ -136,7 +136,7 @@ export class QuizEntity extends BaseEntity {
     public stop() {
         this.stopped = true;
         this.running = false;
-        if (this.channel && this.channel.quizAutoDraw && this.winners.length && !this.randomWinner) {
+        if (this.channel && this.channel.quizRandomDraw && this.winners.length && !this.randomWinner) {
             this.randomWinner = this.winners[Math.floor(Math.random() * this.winners.length)].user;
         }
         this.save();
