@@ -24,7 +24,7 @@ export class QuizzesUsersRelEntity extends BaseEntity {
   @JoinColumn([{ name: "quiz_id", referencedColumnName: "id" }])
   quiz!: Relation<QuizEntity>;
 
-  @ManyToOne(() => UserEntity)
+  @ManyToOne(() => UserEntity, { eager: true })
   @JoinColumn([{ name: "user_id", referencedColumnName: "discordId" }])
   user!: Relation<UserEntity>
 }
