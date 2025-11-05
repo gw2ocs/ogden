@@ -12,7 +12,7 @@ export class ButtonHandler extends InteractionHandler {
 	public async run(interaction: ButtonInteraction, parsedData: InteractionHandler.ParseResult<this>) {
 		const quizId = parsedData.quizId;
 		const _t = await fetchT(interaction);
-		const quiz = this.container.client.quizzes.getQuiz(Number(quizId));
+		const quiz = await this.container.client.quizzes.getQuiz(Number(quizId));
 		if (!quiz) {
 			return interaction.reply({ content: _t('quiz:quizOver'), flags: MessageFlags.Ephemeral });
 		}

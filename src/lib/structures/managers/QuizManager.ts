@@ -109,7 +109,7 @@ export class QuizManager {
         return quiz;
     }
 
-    public getQuiz(quizId: number) {
-        return this.quizzes.find(q => q.id === quizId);
+    public async getQuiz(quizId: number) {
+        return this.quizzes.find(q => q.id === quizId) ?? container.db.quizzes.findOne({ where: { id: quizId }, relations: ["channel", "guild", "question", "question.answers", "question.images", "question.categories", "question.tips", "question.user", "winners"] });
     }
 }
