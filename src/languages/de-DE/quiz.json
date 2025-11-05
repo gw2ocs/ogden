@@ -16,7 +16,8 @@
         "missNoQuestion": ""
     },
     "actions": {
-        "reply": ""
+        "reply": "",
+        "top": ""
     },
     "modal": {
         "answer": ""
