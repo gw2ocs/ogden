@@ -11,7 +11,7 @@ export class ModalHandler extends InteractionHandler {
 		const quizId = parsedData.quizId;
 		const _t = await fetchT(interaction);
 		const quiz = await this.container.client.quizzes.getQuiz(Number(quizId));
-		if (!quiz) {
+		if (!quiz || !quiz.running) {
 			return interaction.reply({ content: _t('quiz:quizOver'), flags: MessageFlags.Ephemeral });
 		}
 		
