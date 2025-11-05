@@ -11,6 +11,7 @@
         "ended": "**Ended!**",
         "endsAt": "End:",
         "goodAnswers": "Good answers:",
+        "randomWinner": "Random winner:",
         "categories": "Categories:",
         "tips": "Tips:",
         "missNoQuestion": "To ensure you don't miss any questions, request the role with `/subscribe`."

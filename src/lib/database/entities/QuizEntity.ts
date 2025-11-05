@@ -1,6 +1,6 @@
-import { ChannelEntity, GuildEntity, QuestionEntity } from "#lib/database";
+import { ChannelEntity, GuildEntity, QuestionEntity, UserEntity } from "#lib/database";
 import type { QuizManager } from "#lib/structures/managers/QuizManager";
-import { ActionRowBuilder, AttachmentBuilder, bold, ButtonBuilder, ButtonStyle, ContainerBuilder, EmbedBuilder, heading, HeadingLevel, hideLinkEmbed, hyperlink, MediaGalleryBuilder, Message, ModalBuilder, SeparatorSpacingSize, subtext, TextInputBuilder, TextInputStyle, time, TimestampStyles, User } from "discord.js";
+import { ActionRowBuilder, AttachmentBuilder, bold, ButtonBuilder, ButtonStyle, ContainerBuilder, EmbedBuilder, heading, HeadingLevel, hideLinkEmbed, hyperlink, MediaGalleryBuilder, Message, ModalBuilder, SeparatorSpacingSize, subtext, TextInputBuilder, TextInputStyle, time, TimestampStyles, User, userMention } from "discord.js";
 import {
     BaseEntity,
     Column,
@@ -46,6 +46,9 @@ export class QuizEntity extends BaseEntity {
 
     @Column("boolean", { name: 'running' })
     running!: boolean;
+
+    @Column("character varying", { name: "random_winner_id", nullable: true })
+    randomWinnerId!: string;
     
     @ManyToOne(() => GuildEntity, (guilds) => guilds.quizzes, {
         onDelete: "CASCADE",
@@ -55,6 +58,7 @@ export class QuizEntity extends BaseEntity {
     
     @ManyToOne(() => ChannelEntity, (channels) => channels.quizzes, {
         onDelete: "CASCADE",
+        eager: true,
     })
     @JoinColumn([{ name: "channel_id", referencedColumnName: "discordId" }])
     channel!: Relation<ChannelEntity>;
@@ -65,6 +69,10 @@ export class QuizEntity extends BaseEntity {
 
     @OneToMany(() => QuizzesUsersRelEntity, (rel) => rel.quiz)
     winners!: Relation<QuizzesUsersRelEntity[]>;
+
+    @ManyToOne(() => UserEntity, { nullable: true, eager: true })
+    @JoinColumn([{ name: "random_winner_id", referencedColumnName: "discordId" }])
+    randomWinner!: Relation<UserEntity>;
 
     private manager: QuizManager = null!;
 
@@ -128,6 +136,9 @@ export class QuizEntity extends BaseEntity {
     public stop() {
         this.stopped = true;
         this.running = false;
+        if (this.channel && this.channel.quizAutoDraw && this.winners.length && !this.randomWinner) {
+            this.randomWinner = this.winners[Math.floor(Math.random() * this.winners.length)].user;
+        }
         this.save();
         if (this.message) this.message.edit({ components: this.components });
         this.manager.stopQuiz(this);
@@ -156,6 +167,12 @@ export class QuizEntity extends BaseEntity {
         if (this.winners && this.winners.length > 0) {
             color = 0xffd700;
             component.addTextDisplayComponents(d => d.setContent(`${this._t!('quiz:container:goodAnswers')} ${this.winners.length}`));
+        }
+
+        if (this.randomWinner) {
+            component
+                .addSeparatorComponents(sep => sep.setDivider(false).setSpacing(SeparatorSpacingSize.Small))
+                .addTextDisplayComponents(d => d.setContent(`${bold(this._t!('quiz:container:randomWinner'))} ${userMention(this.randomWinner.discordId)}`));
         }
 
         if (this.question.categories.length) {

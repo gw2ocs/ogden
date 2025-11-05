@@ -23,9 +23,6 @@ export class ChannelEntity extends BaseEntity {
     @Column("character varying", { name: "type" })
     type!: string;
 
-    @Column("character varying", { name: "last_winner", nullable: true })
-    lastWinner!: string | null;
-
     @Column("character varying", { name: "role", nullable: true })
     role!: string | null;
 
@@ -77,6 +74,9 @@ export class ChannelEntity extends BaseEntity {
         joinRelation: string,
         where: string
     } | null;
+
+    @Column("boolean", { name: "quiz_auto_draw" })
+    quizAutoDraw!: boolean;
     
     @ManyToOne(() => GuildEntity, (guilds) => guilds.channels, {
         onDelete: "CASCADE",
