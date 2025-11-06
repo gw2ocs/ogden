@@ -11,7 +11,7 @@
         "ended": "**Fini !**",
         "endsAt": "Fin :",
         "goodAnswers": "Bonnes réponses :",
-        "randomWinner": "",
+        "randomWinner": "Gagnant tiré au sort :",
         "categories": "Catégories :",
         "tips": "Indices :",
         "missNoQuestion": "Pour ne rater aucune question, demandez le rôle avec `/subscribe`."
