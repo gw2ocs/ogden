@@ -20,7 +20,7 @@ export class ButtonHandler extends InteractionHandler {
 		const items: EmbedField[] = [];
 		const timestamp = new Timestamp('HH:mm:ss:SSS');
 
-		for (const entry of quiz.winners) {
+		for (const entry of quiz.winners.sort((a, b) => a.resolutionDuration! - b.resolutionDuration!)) {
 			items.push({ name: entry.user.username, value: timestamp.display(entry.resolutionDuration!), inline: false });
 		}
 
