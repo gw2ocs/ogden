@@ -1,6 +1,6 @@
 import { ApplyOptions } from '@sapphire/decorators';
 import { Command } from '@sapphire/framework';
-import { MessageFlags } from 'discord.js';
+import { ApplicationIntegrationType, InteractionContextType, MessageFlags } from 'discord.js';
 
 @ApplyOptions<Command.Options>({
     description: 'Pour être notifié dès qu\'Ogden pose une question. La commande doit être exécutée dans le salon du quiz.'
@@ -12,6 +12,8 @@ export class UserCommand extends Command {
             builder
                 .setName(this.name)
                 .setDescription(this.description)
+                .setIntegrationTypes([ApplicationIntegrationType.GuildInstall])
+                .setContexts([InteractionContextType.Guild])
         );
     }
 
