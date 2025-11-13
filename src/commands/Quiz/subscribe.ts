@@ -3,7 +3,7 @@ import { Command } from '@sapphire/framework';
 import { ApplicationIntegrationType, InteractionContextType, MessageFlags } from 'discord.js';
 
 @ApplyOptions<Command.Options>({
-    description: 'Pour être notifié dès qu\'Ogden pose une question. La commande doit être exécutée dans le salon du quiz.'
+    description: 'Être notifié dès qu\'Ogden pose une question. À exécuter dans le salon du quiz.'
 })
 export class UserCommand extends Command {
 
