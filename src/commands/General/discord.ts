@@ -4,15 +4,9 @@ import { send } from '@sapphire/plugin-editable-commands';
 import { ApplicationIntegrationType, InteractionContextType, type Message } from 'discord.js';
 
 @ApplyOptions<Command.Options>({
-	description: 'Présentation d\'Ogden.',
-	aliases: ['bot-info'],
+	description: 'Discord de Questions pour un Quaggan',
 	detailedDescription: [
-		'Je suis Ogden Guéripierre, le dernier des Nains.',
-		"Comme mon travail au Prieuré me laisse beaucoup de temps libre, j'ai décidé de mettre à l'épreuve les aventuriers.",
-		"Ainsi donc, pour m'assurer que l'histoire de la Tyrie ne soit pas oubliée, je pose des questions sur le passé, le présent et diverses choses.",
-		'',
-		"Si vous souhaitez ne manquer aucune question, vous pouvez vous abonner en écrivant `/subscribe` dans le salon dédié. Vous serez ainsi notifié lorsque je m'apprète à poser ma question.",
-		"Pour plus d'informations, rendez-vous sur <https://gw2trivia.com>."
+		"Pour profiter pleinement de l'expérience, rejoignez le serveur Discord officiel de [Questions pour un Quaggan](https://discord.gg/EWAzDQN) !",
 	].join('\n')
 })
 export class UserCommand extends Command {
