@@ -94,7 +94,7 @@ export class UserEntity {
     const _activity = (await db.activities.findOne({ where: { ref: activityName, guildId } }))
                     ?? (await db.activities.create({ ref: activityName, guildId }).save());
     const _score = (await db.scores.findOne({ where: { activityId: _activity.id, userId: this.id } }))
-                    ?? (await db.scores.create({ activityId: _activity.id, userId: this.id }).save());
+                    ?? (await db.scores.create({ activityId: _activity.id, userId: this.id, amount: 0 }).save());
     _score.amount += points;
     return _score.save();
   }

@@ -14,7 +14,7 @@ export const UserRepository = AppDataSource.getRepository(UserEntity).extend({
                 discriminator: user.discriminator,
                 avatar: user.avatar
             });
-            await this.save(_user);
+            _user = await this.save(_user);
         }
         return _user;
     }
