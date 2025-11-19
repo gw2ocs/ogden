@@ -33,8 +33,8 @@ export class UserEntity {
   @Column("text", { name: "avatar", nullable: true })
   avatar!: string | null;
 
-  @Column("text", { name: "locale" })
-  locale!: string;
+  @Column("text", { name: "locale", default: () => "'en-US'" })
+  locale: string = "en-US";
 
   @Column("timestamp without time zone", {
     name: "created_at",
