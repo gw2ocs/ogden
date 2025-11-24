@@ -11,7 +11,7 @@ import { ApplicationIntegrationType, InteractionContextType, type Message } from
 		"Comme mon travail au Prieuré me laisse beaucoup de temps libre, j'ai décidé de mettre à l'épreuve les aventuriers.",
 		"Ainsi donc, pour m'assurer que l'histoire de la Tyrie ne soit pas oubliée, je pose des questions sur le passé, le présent et diverses choses.",
 		'',
-		"Si vous souhaitez ne manquer aucune question, vous pouvez vous abonner en écrivant `/subscribe` dans le salon dédié. Vous serez ainsi notifié lorsque je m'apprète à poser ma question.",
+		"Si vous souhaitez ne manquer aucune question, vous pouvez vous abonner en utilisant la commande `/subscribe` dans le salon dédié. Vous serez ainsi notifié lorsque je m'apprète à poser ma question.",
 		"Pour plus d'informations, rendez-vous sur <https://gw2trivia.com>."
 	].join('\n')
 })
