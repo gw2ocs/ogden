@@ -22,5 +22,15 @@
     },
     "modal": {
         "answer": ""
+    },
+    "top": {
+        "title": "",
+        "yourPosition": "",
+        "noData": "",
+        "first": "",
+        "second": "",
+        "third": "",
+        "remaining_ordinal_one": "",
+        "remaining_ordinal_other": ""
     }
 }
