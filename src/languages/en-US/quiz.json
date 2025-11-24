@@ -22,5 +22,17 @@
     },
     "modal": {
         "answer": "Answer"
+    },
+    "top": {
+        "title": "🏆 Quiz Ranking for \"{{question}}\"",
+        "yourPosition": "Your position:",
+        "noData": "No data available.",
+        "podium_one": "🥇 {{user}}",
+        "podium_two": "🥈 {{user}}",
+        "podium_three": "🥉 {{user}}",
+        "remaining_ordinal_one": "{{count}}st: {{user}}",
+        "remaining_ordinal_two": "{{count}}nd: {{user}}",
+        "remaining_ordinal_three": "{{count}}rd: {{user}}",
+        "remaining_ordinal_other": "{{count}}th: {{user}}"
     }
 }

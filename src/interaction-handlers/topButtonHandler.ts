@@ -20,12 +20,18 @@ export class ButtonHandler extends InteractionHandler {
 		const items: EmbedField[] = [];
 		const timestamp = new Timestamp('HH:mm:ss:SSS');
 
-		for (const entry of quiz.winners.sort((a, b) => a.resolutionDuration! - b.resolutionDuration!)) {
-			items.push({ name: entry.user.username, value: timestamp.display(entry.resolutionDuration!), inline: false });
+		const winners = quiz.winners.sort((a, b) => a.resolutionDuration! - b.resolutionDuration!);
+
+		for (const [i, entry] of winners.slice(0, 3).entries()) {
+			items.push({ name: _t('quiz.top.podium', { user: entry.user.username, count: i }), value: timestamp.display(entry.resolutionDuration!), inline: false });
+		}
+
+		for (const [i, entry] of winners.slice(3).entries()) {
+			items.push({ name: _t('quiz.top.remaining', { user: entry.user.username, count: i+3, ordinal: true }), value: timestamp.display(entry.resolutionDuration!), inline: false });
 		}
 
 		const paginatedMessage = new PaginatedMessageEmbedFields()
-			.setTemplate({ title: 'Top', color: 0xffd700 })
+			.setTemplate({ title: _t('quiz.top.title', { question: quiz.question.title }), color: 0xffd700 })
 			.setItemsPerPage(10)
 			.setItems(items);
 

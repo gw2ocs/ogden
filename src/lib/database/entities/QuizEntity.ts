@@ -166,7 +166,8 @@ export class QuizEntity extends BaseEntity {
 
         if (this.winners && this.winners.length > 0) {
             color = 0xffd700;
-            component.addTextDisplayComponents(d => d.setContent(`${this._t!('quiz:container:goodAnswers')} ${this.winners.length}`));
+            const winners = this.winners.sort((a, b) => a.resolutionDuration! - b.resolutionDuration!).slice(0, 3);
+            component.addTextDisplayComponents(d => d.setContent(`${this._t!('quiz:container:goodAnswers')} ${this.winners.length}\n${winners.map((w, i) => this._t!('quiz.top.podium', { user: userMention(w.user.discordId), count: i + 1 }) ).join('\n')}`));
         }
 
         if (this.randomWinner) {
