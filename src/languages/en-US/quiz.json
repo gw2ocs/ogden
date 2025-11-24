@@ -29,10 +29,10 @@
         "noData": "No data available.",
         "podium_one": "🥇 {{user}}",
         "podium_two": "🥈 {{user}}",
-        "podium_three": "🥉 {{user}}",
+        "podium_few": "🥉 {{user}}",
         "remaining_ordinal_one": "{{count}}st: {{user}}",
         "remaining_ordinal_two": "{{count}}nd: {{user}}",
-        "remaining_ordinal_three": "{{count}}rd: {{user}}",
+        "remaining_ordinal_few": "{{count}}rd: {{user}}",
         "remaining_ordinal_other": "{{count}}th: {{user}}"
     }
 }
