@@ -27,9 +27,9 @@
         "title": "🏆 Classement pour \"{{question}}\"",
         "yourPosition": "Votre position :",
         "noData": "Pas de données disponibles.",
-        "first": "",
-        "second": "",
-        "third": "",
+        "first": "🥇 {{user}}",
+        "second": "🥈 {{user}}",
+        "third": "🥉 {{user}}",
         "remaining_ordinal_one": "{{count}}er : {{user}}",
         "remaining_ordinal_other": "{{count}}ème : {{user}}"
     }
