@@ -22,8 +22,9 @@ export class ButtonHandler extends InteractionHandler {
 
 		const winners = quiz.winners.sort((a, b) => a.resolutionDuration! - b.resolutionDuration!);
 
+		const podiumKeys = ['first', 'second', 'third'];
 		for (const [i, entry] of winners.slice(0, 3).entries()) {
-			items.push({ name: _t('quiz.top.podium', { user: entry.user.username, count: i }), value: timestamp.display(entry.resolutionDuration!), inline: false });
+			items.push({ name: _t(`quiz.top.${podiumKeys[i]}`, { user: entry.user.username }), value: timestamp.display(entry.resolutionDuration!), inline: false });
 		}
 
 		for (const [i, entry] of winners.slice(3).entries()) {
