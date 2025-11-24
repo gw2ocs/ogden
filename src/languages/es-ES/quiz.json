@@ -22,5 +22,16 @@
     },
     "modal": {
         "answer": ""
+    },
+    "top": {
+        "title": "",
+        "yourPosition": "",
+        "noData": "",
+        "podium_three": "",
+        "remaining_ordinal_three": "",
+        "podium_one": "",
+        "podium_other": "",
+        "remaining_ordinal_one": "",
+        "remaining_ordinal_other": ""
     }
 }
