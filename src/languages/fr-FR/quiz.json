@@ -24,12 +24,12 @@
         "answer": "Réponse"
     },
     "top": {
-        "title": "",
-        "yourPosition": "",
-        "noData": "",
+        "title": "🏆 Classement pour \"{{question}}\"",
+        "yourPosition": "Votre position :",
+        "noData": "Pas de données disponibles.",
         "podium_one": "",
         "podium_other": "",
-        "remaining_ordinal_one": "",
-        "remaining_ordinal_other": ""
+        "remaining_ordinal_one": "{{count}}er : {{user}}",
+        "remaining_ordinal_other": "{{count}}ème : {{user}}"
     }
 }
