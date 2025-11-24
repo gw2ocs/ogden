@@ -27,8 +27,9 @@
         "title": "",
         "yourPosition": "",
         "noData": "",
-        "podium_one": "",
-        "podium_other": "",
+        "first": "",
+        "second": "",
+        "third": "",
         "remaining_ordinal_one": "",
         "remaining_ordinal_other": ""
     }
