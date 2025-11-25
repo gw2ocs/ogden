@@ -32,7 +32,7 @@ export class ButtonHandler extends InteractionHandler {
 		}
 
 		const paginatedMessage = new PaginatedMessageEmbedFields()
-			.setTemplate({ title: _t('quiz:top:title', { question: quiz.question.title }), color: 0xffd700 })
+			.setTemplate({ title: _t('quiz:top:title'), color: 0xffd700, description: quiz.question.title })
 			.setItemsPerPage(10)
 			.setItems(items);
 
