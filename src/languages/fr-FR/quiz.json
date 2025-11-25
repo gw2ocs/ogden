@@ -17,14 +17,14 @@
         "missNoQuestion": "Pour ne rater aucune question, demandez le rôle avec `/subscribe`."
     },
     "actions": {
-        "reply": "Répondre",
-        "top": "Classement"
+        "reply": "",
+        "top": ""
     },
     "modal": {
         "answer": "Réponse"
     },
     "top": {
-        "title": "",
+        "title": "🏆 Classement 🏆",
         "yourPosition": "Votre position :",
         "noData": "Pas de données disponibles.",
         "first": "🥇 {{user}}",
