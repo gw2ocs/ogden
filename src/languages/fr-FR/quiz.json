@@ -24,7 +24,7 @@
         "answer": "Réponse"
     },
     "top": {
-        "title": "🏆 Classement pour \"{{question}}\"",
+        "title": "",
         "yourPosition": "Votre position :",
         "noData": "Pas de données disponibles.",
         "first": "🥇 {{user}}",
