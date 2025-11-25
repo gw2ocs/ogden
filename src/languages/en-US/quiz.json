@@ -24,7 +24,7 @@
         "answer": "Answer"
     },
     "top": {
-        "title": "🏆 Quiz Ranking for \"{{question}}\"",
+        "title": "🏆 Quiz Ranking 🏆",
         "yourPosition": "Your position:",
         "noData": "No data available.",
         "first": "🥇 {{user}}",
