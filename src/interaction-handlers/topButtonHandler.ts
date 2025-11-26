@@ -10,6 +10,7 @@ import { MessageFlags, type ButtonInteraction, type EmbedField } from 'discord.j
 })
 export class ButtonHandler extends InteractionHandler {
 	public async run(interaction: ButtonInteraction, parsedData: InteractionHandler.ParseResult<this>) {
+		await interaction.deferReply({ ephemeral: true });
 		const quizId = parsedData.quizId;
 		const _t = await fetchT(interaction);
 		const quiz = await this.container.client.quizzes.getQuiz(Number(quizId));
