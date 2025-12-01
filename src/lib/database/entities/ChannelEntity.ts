@@ -77,6 +77,9 @@ export class ChannelEntity extends BaseEntity {
 
     @Column("boolean", { name: "quiz_random_draw" })
     quizRandomDraw!: boolean;
+
+    @Column("text", { name: "quiz_blacklist_draw", array: true })
+    quizBlackListDraw!: string[] | null;
     
     @ManyToOne(() => GuildEntity, (guilds) => guilds.channels, {
         onDelete: "CASCADE",

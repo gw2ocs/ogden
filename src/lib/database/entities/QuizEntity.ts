@@ -136,8 +136,15 @@ export class QuizEntity extends BaseEntity {
     public stop() {
         this.stopped = true;
         this.running = false;
-        if (this.channel && this.channel.quizRandomDraw && this.winners.length && !this.randomWinner) {
-            this.randomWinner = this.winners[Math.floor(Math.random() * this.winners.length)].user;
+        if (this.channel && this.channel.quizRandomDraw && !this.randomWinner) {
+            let winners = this.winners;
+            const blacklist = this.channel.quizBlackListDraw;
+            if (blacklist && blacklist.length) {
+                winners = winners.filter(w => blacklist.indexOf(w.user.discordId) === -1);
+            }
+            if (winners.length) {
+                this.randomWinner = winners[Math.floor(Math.random() * winners.length)].user;
+            }
         }
         this.save();
         if (this.message) this.message.edit({ components: this.components });
