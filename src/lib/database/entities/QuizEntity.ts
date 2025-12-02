@@ -144,6 +144,13 @@ export class QuizEntity extends BaseEntity {
             }
             if (winners.length) {
                 this.randomWinner = winners[Math.floor(Math.random() * winners.length)].user;
+
+                if (this.channel.quizTemplateDraw) {
+                    let template = this.channel.quizTemplateDraw;
+                    const user = userMention(this.randomWinner.discordId);
+
+                    if (this.message) this.message.reply(template.replaceAll('{user}', user));
+                }
             }
         }
         this.save();

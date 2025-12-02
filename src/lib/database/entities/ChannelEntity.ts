@@ -80,6 +80,9 @@ export class ChannelEntity extends BaseEntity {
 
     @Column("text", { name: "quiz_blacklist_draw", array: true })
     quizBlackListDraw!: string[] | null;
+
+    @Column("text", { name: "quiz_template_draw" })
+    quizTemplateDraw!: string | null;
     
     @ManyToOne(() => GuildEntity, (guilds) => guilds.channels, {
         onDelete: "CASCADE",
