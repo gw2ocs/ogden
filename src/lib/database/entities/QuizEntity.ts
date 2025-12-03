@@ -149,7 +149,7 @@ export class QuizEntity extends BaseEntity {
                     let template = this.channel.quizTemplateDraw;
                     const user = userMention(this.randomWinner.discordId);
 
-                    if (this.message) this.message.reply(template.replaceAll('{user}', user));
+                    if (this.message) this.message.reply({ content: template.replaceAll('{user}', user) });
                 }
             }
         }
