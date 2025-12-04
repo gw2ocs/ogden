@@ -14,6 +14,9 @@ export class ButtonHandler extends InteractionHandler {
 		const quizId = parsedData.quizId;
 		const _t = await fetchT(interaction);
 		const quiz = await this.container.client.quizzes.getQuiz(Number(quizId));
+		const user = interaction.user;
+		let position = 0;
+
 		if (!quiz) {
 			return interaction.reply({ content: _t('quiz:quizOver'), flags: MessageFlags.Ephemeral });
 		}
@@ -26,14 +29,26 @@ export class ButtonHandler extends InteractionHandler {
 		const podiumKeys = ['first', 'second', 'third'];
 		for (const [i, entry] of winners.slice(0, 3).entries()) {
 			items.push({ name: _t(`quiz:top:${podiumKeys[i]}`, { user: entry.user.username }), value: timestamp.display(entry.resolutionDuration!), inline: false });
+			if (entry.user.discordId === user.id) {
+				position = i + 1;
+			}
 		}
 
 		for (const [i, entry] of winners.slice(3).entries()) {
-			items.push({ name: _t('quiz:top:remaining', { user: entry.user.username, count: i+3, ordinal: true }), value: timestamp.display(entry.resolutionDuration!), inline: false });
+			items.push({ name: _t('quiz:top:remaining', { user: entry.user.username, count: i+4, ordinal: true }), value: timestamp.display(entry.resolutionDuration!), inline: false });
+			if (entry.user.discordId === user.id) {
+				position = i + 4;
+			}
+		}
+
+		let description = quiz.question.title;
+
+		if (position > 0) {
+			description += `\n\n${_t('quiz:top:yourPosition')} **#${position}**`;
 		}
 
 		const paginatedMessage = new PaginatedMessageEmbedFields()
-			.setTemplate({ title: _t('quiz:top:title'), color: 0xffd700, description: quiz.question.title })
+			.setTemplate({ title: _t('quiz:top:title'), color: 0xffd700, description })
 			.setItemsPerPage(10)
 			.setItems(items);
 
