@@ -25,6 +25,8 @@ jobs:
 
   Building:
     name: Building NodeJS
+    permissions:
+      contents: read
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Project
