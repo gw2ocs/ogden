@@ -25,9 +25,9 @@ jobs:
 
   Building:
     name: Building NodeJS
-    runs-on: ubuntu-latest
     permissions:
       contents: read
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout Project
         uses: actions/checkout@v4

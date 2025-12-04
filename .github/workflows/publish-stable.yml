@@ -9,7 +9,7 @@ on:
         description: The SHA256 commit hash to publish
 
 jobs:
-  PublishSkyra:
+  PublishOgden:
     name: Publish Ogden image to container registries
     permissions:
       contents: read
