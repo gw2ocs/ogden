@@ -39,6 +39,7 @@ export class QuizManager {
                     .getQuery()
                 return "question.id NOT IN " + subQuery
             })
+            .andWhere('question.validated IS NOT NULL')
             .andWhere('question.language = :language', { language: _channel.language || 'en-US' })
             .setParameter("channelId", channel.id);
         if (_channel.filter) {
